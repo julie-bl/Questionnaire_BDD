@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Qualité - Base de Données Santé</title>
+    <link rel="stylesheet" href="questionnaire.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <a id="back-button" href="presentation_questionnaire.html">Retour</a> 
+    <br><br><br>
+  <h1>Questionnaire d’auto-évaluation de la gestion de la qualité d’une base de
+    données en santé pour le partage à des fins de recherche</h1>
+    <br>
+    <div class="tabs">
+        <button id="tabButton1" onclick="voirOngletSpe('onglet1')">Structuration </button>
+        <button id="tabButton2" onclick="voirOngletSpe('onglet2')">Qualité</button>
+        <button id="tabButton3" onclick="voirOngletSpe('onglet3')">Traçabilité</button>
+        <button id="tabButton4" onclick="voirOngletSpe('onglet4')">Réglementations</button>
+        <button id="tabButton5" onclick="voirOngletSpe('onglet5')">Évaluation externe</button>
+      </div>
+      
+
+   <!--Première partie-->
+<div class="tab-content" id="onglet1" data_max="6">
+    <h2>Structuration pour l’ouverture à la recherche</h2><br>
+
+    <p>1.  Existe-t-il une publication (*) définissant la base de données et/ou son protocole dans une revue à
+        comité de lecture (critères d’inclusion, variables collectées, etc.) ?</p>
+    <label><input type="radio" name="q1" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q1" value="en_cours" data-score="0.5"> En cours</label>
+    <label><input type="radio" name="q1" value="non" data-score="0"> Non</label>
+
+    <div class="sub-question" id="q1b-container" style="display:none;">
+        <p>Si non, existe-t-il un document accessible avec au minimum les informations suivantes ?
+        Population cible, critères d’inclusion, variables collectées, modalité de collecte, contrôle qualité.</p>
+        <label><input type="radio" name="q1b" value="oui" data-score="0.5"> Oui</label>
+        <label><input type="radio" name="q1b" value="non" data-score="0"> Non</label>
+    </div>
+   
+    <p>2.  La base de données est-elle partageable(**) avec d’autres utilisateurs que votre équipe ?</p>
+    <label><input type="radio" name="q2" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q2" value="non" data-score="0"> Non</label>
+
+    <p>3.  Existe-t-il une procédure formalisée pour accéder à la base de données ?</p>
+    <label><input type="radio" name="q3" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q3" value="non" data-score="0"> Non</label>
+
+    <p>4.  Existe-il une instance scientifique pour l’évaluation des projets portant sur la base de données ?</p>
+    <label><input type="radio" name="q4" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q4" value="non" data-score="0"> Non</label>
+
+    <p>5.  Une équipe est-elle disponible pour accompagner l’utilisabilité des données (au minimum un
+        data-manager) ?</p>
+    <label><input type="radio" name="q5" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q5" value="non" data-score="0"> Non</label>
+
+    <p>6.  Existe-il un dictionnaire des variables (au minimum leurs définitions, formats, et modes de
+        collecte) ?</p>
+    <label><input type="radio" name="q6" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q6" value="non" data-score="0"> Non</label>
+
+    <div class="sub-question" id="q6b-container" style="display:none;">
+        <p>Si oui, les modifications au cours du temps des variables et de leurs codages (versioning des
+        modifications) sont-elles intégrées ?</p>
+         <label><input type="radio" name="q6b" value="oui" data-score="1"> Oui</label>
+         <label><input type="radio" name="q6b" value="non" data-score="0"> Non</label>
+         <label><input type="radio" name="q6b" value="na" data-score="na"> Non applicable (étude transversale)</label>
+    </div>
+     <br>
+     <br>
+        <p>(*): Il peut s’agir d’une publication d’un consortium dans lequel s’inscrit la base de données (exemple d’un
+        registre français s’inscrivant dans une organisation internationale).<br>
+        (**): Une équipe tierce peut accéder aux données individuelles directement ou indirectement (extraction).</p>
+        <br>   
+    <button class="nav-button" onclick="passerOnglet()">Suivant</button> 
+</div>
+
+    <!--Deuxième partie-->
+    <div class="tab-content" id="onglet2" style="display: none;" data_max="9">
+
+    <h2>Procédures de mise en qualité</h2><br>
+    <p>1.  Existe-t-il une formation du personnel de collecte ?</p>
+    <label><input type="radio" name="q7" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q7" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q7" value="na" data-score="na"> Non applicable</label>
+
+    <p>2.  Existe-t-il un protocole formalisé pour standardiser la collecte(*) ?</p>
+    <label><input type="radio" name="q8" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q8" value="non" data-score="na"> Non</label>
+
+    <p>3.  Existe-il des contrôles de cohérence à la collecte ?</p>
+    <label><input type="radio" name="q9" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q9" value="non" data-score="0"> Non</label>
+
+    <p>4.  Existe-il des audits de qualité internes ?</p>
+    <label><input type="radio" name="q10" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q10" value="non" data-score="0"> Non</label>
+
+    <p>5.  Existe-il des audits de qualité externes ?</p>
+    <label><input type="radio" name="q11" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q11" value="non" data-score="0"> Non</label>
+
+    <p>6.  Des classifications standardisées sont-elles utilisées (par exemple : CIM-10, questionnaires
+        validés, etc.) ?</p>
+    <label><input type="radio" name="q12" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q12" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q12" value="na" data-score="na"> Non applicable</label>
+
+    <p>7.  Les instruments de mesure sont-ils régulièrement standardisés, calibrés, vérifiés ?</p>
+    <label><input type="radio" name="q13" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q13" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q13" value="na" data-score="na"> Non applicable</label>
+
+    <p>8.  Pour les collections biologiques, existe-t-il des consignes de traitement et de stockage des
+        échantillons ?</p>
+    <label><input type="radio" name="q14" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q14" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q14" value="na" data-score="1"> Non applicable</label>
+
+    <p>9.  Pour l'imagerie, existe-t-il des consignes de réalisation des clichés ?</p>
+    <label><input type="radio" name="q15" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q15" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q15" value="na" data-score="na"> Non applicable</label>
+
+    <br>
+    <br>
+    <p>(*): Qu’il s’agisse d’une saisie manuelle ou automatisée depuis une autre source d’information, un document
+        précisant la conformité des données recueillies et les procédures associées de standardisation.</p>
+    <br>
+     <button class="nav-button" onclick="passerOnglet()">Suivant</button>
+</div>
+    <!--Troisième partie-->
+    <div class="tab-content" id="onglet3" style="display: none;" data_max="4">
+
+    <h2>Traçabilité du processus qualité</h2><br>
+    <p>1.  Existe-il un cahier des charges de data management décrivant le processus de mise en qualité
+        des données(*) ?</p>
+    <label><input type="radio" name="q16" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q16" value="non" data-score="0"> Non</label>
+
+    <p>2.  Les modifications apportées aux données après la collecte sont-elles traçables ?</p>
+    <label><input type="radio" name="q17" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q17" value="non" data-score="0"> Non</label>
+
+    <p>3.  Peut-on accéder à la fois aux données brutes et retravaillées (par exemple : nettoyage,
+        recodage, etc.) ?</p>
+    <label><input type="radio" name="q18" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q18" value="non" data-score="0"> Non</label>
+    <label><input type="radio" name="q18" value="na" data-score="na"> Non applicable</label>
+
+    <p>4.  Existe-t-il des indicateurs de qualité régulièrement calculés à partir des données collectées ?</p>
+    <label><input type="radio" name="q19" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q19" value="non" data-score="0"> Non</label>
+
+    <br>
+    <br>
+    <p>(*): Nettoyage des données non qualitatives, suppression des doublons, standardisation des données pour le partage
+        et l’interopérabilité.</p>
+    <br>
+     <button class="nav-button" onclick="passerOnglet()">Suivant</button>
+</div>
+    <!--Quatrième partie-->
+    <div class="tab-content" id="onglet4" style="display: none;" data_max="4">
+
+    <h2>Normes et réglementations</h2><br>
+    <p>1.  La base de données est-elle engagée dans un processus normatif (par exemple : BPC, BPE, NF, ISO,
+        etc.) ?</p>
+    <label><input type="radio" name="q20" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q20" value="en_cours" data-score="0.5"> En cours</label>
+    <label><input type="radio" name="q20" value="non" data-score="0"> Non</label>
+
+    <p>2.  Le régime juridique de la base de données déclarée à la CNIL est :</p>
+    <label><input type="radio" name="q21" value="entrepot" data-score="1"> Entrepôt de données (*)</label><br>
+    <label><input type="radio" name="q21" value="recherche" data-score="0.5"> Recherche, étude ou évaluation ponctuelle (**)</label><br>
+    <label><input type="radio" name="q21" value="demande" data-score="0.75"> Une demande de changement du statut d’étude à celui d’entrepôt est en cours</label>
+
+    <p>3.  Est-ce que l’information à l’inclusion des sujets prévoit la réutilisation secondaire de leurs
+        données ?</p>
+    <label><input type="radio" name="q22" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q22" value="non" data-score="0"> Non</label>
+
+    <div class="sub-question" id="q22b-container" style="display:none;">
+    <p>Si oui, les canaux d’information (***) des patients sont-ils fonctionnels ?</p>
+    <label><input type="radio" name="q22b" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q22b" value="non" data-score="0"> Non</label>
+    </div>
+
+    <br><br>
+    <p>(*): Délibération de la CNIL autorisant à collecter des données afin qu’elles puissent être secondairement réutilisées
+        à des fins d’études, de recherches et d’évaluations dans le domaine de la santé.<br>
+    (**)Délibération de la CNIL autorisant à collecter des données pour une finalité précise et réponse à une question
+    spécifique et ponctuelle. La durée de la recherche est limitée. Les données sont collectées spécifiquement pour les
+    besoins de la recherche.<br>
+    (***): Capacité à dispenser une information actualisée aux participants à l’étude (transmission d’une nouvelle notice
+    d’information ou d’un bulletin d’information, site web, etc.).</p>
+    <br>
+     <button class="nav-button" onclick="passerOnglet()">Suivant</button>
+</div>
+    <!--Cinquième partie-->
+    <div class="tab-content" id="onglet5" style="display: none;" data_max="4">
+
+    <h2>Évaluation externe, publications et animation</h2><br>
+    <p>1.  La base de données a-t-elle fait l’objet d’une évaluation par un organisme indépendant (par
+        exemple : ANR, comité d’évaluation des registres, etc.) ?</p>
+    <label><input type="radio" name="q23" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q23" value="non" data-score="0"> Non</label>
+
+    <p>2.  La liste des projets initiés à partir de la base est-elle publiquement accessible (*) ?</p>
+    <label><input type="radio" name="q24" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q24" value="non" data-score="0"> Non</label>
+
+    <p>3.  La liste des publications scientifiques issues de la base avec les principaux résultats est-elle
+        publiquement accessible ?</p>
+    <label><input type="radio" name="q25" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q25" value="non" data-score="0"> Non</label>
+
+    <p>4.  Existe-il une communauté structurée d’utilisateurs de la base (par exemple : club utilisateurs,
+        consortium) ?</p>
+    <label><input type="radio" name="q26" value="oui" data-score="1"> Oui</label>
+    <label><input type="radio" name="q26" value="non" data-score="0"> Non</label>
+
+    <br>
+    <br>
+    <p>(*): Action proactive pour mettre à disposition du public les informations actualisées. Le fait de transmettre ces
+        informations uniquement sur sollicitation ne constitue pas un accès public.</p>
+        <br>
+        <button class="nav-button" onclick="voirResultats()">Voir les résultats</button>
+    </div>
+
+<!-- Modale résultats -->
+<div id="modal-resultats">
+  <div class="modal-content">
+    <button onclick="fermerModalResultats()" class="close-modal">Fermer</button>
+    <br>
+    <h1>Indice de qualité de la base de donnée</h1>
+    <br>
+    <div class="score-global">
+      <span id="score-total"></span>
+      <span id="score-dot" class="score-dot"></span>
+    </div>
+    <br><br>
+    <div id="scores-categories"></div>
+    <br>
+    <button onclick="telechargerPDF()">Télécharger les résultats en PDF</button>
+  </div>
+</div>
+    <script src="script.js"></script>  
+</body>
+</html>
