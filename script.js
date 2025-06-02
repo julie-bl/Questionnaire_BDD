@@ -88,12 +88,11 @@ function passerOnglet() {
   }
 }
 
-// ...existing code...
 
 document.addEventListener('DOMContentLoaded', () => {
   voirOnglet(tabIds[0]);
 
-  // --- Gestion q1b (affichage seulement, ne change pas data_max) ---
+  // Gestion q1b (choix " si non (...) ")
   const onglet1 = document.getElementById('onglet1');
   const q1Radios = onglet1.querySelectorAll('input[name="q1"]');
   const q1bContainer = document.getElementById('q1b-container');
@@ -110,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Gestion q6b (affichage ET data_max) ---
+  // Gestion q6b ( choix "si oui (...)" ") 
   const q6Radios = onglet1.querySelectorAll('input[name="q6"]');
   const q6bContainer = document.getElementById('q6b-container');
   const baseMaxQ6 = 6; // data_max sans q6b
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Gestion q22b (affichage ET data_max) ---
+  // Gestion q22b ( choix "si oui (...)" ") 
   const onglet4 = document.getElementById('onglet4');
   const q22Radios = onglet4.querySelectorAll('input[name="q22"]');
   const q22bContainer = document.getElementById('q22b-container');
@@ -150,12 +149,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ...existing code...
 
 //Fonction qui affiche les résultats
 function voirResultats() {
-  const currentTabId = tabIds[currentTab];
-  const currentTabElement = document.getElementById(currentTabId);
+
+//Chevrons (flèches pour le détail des catégories)
+const arrowChevronRight = `<svg class="detail-arrow" width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M8 5l8 7-8 7" stroke="#280147" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const arrowChevronDown = `<svg class="detail-arrow" width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle; transform: rotate(90deg);"><path d="M8 5l8 7-8 7" stroke="#280147" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  
+const currentTabId = tabIds[currentTab];
+const currentTabElement = document.getElementById(currentTabId);
 
   // Vérifiez si toutes les questions du DERNIER onglet sont répondues
   if (!VerifRep(currentTabElement)) {
@@ -163,48 +166,125 @@ function voirResultats() {
       return;
   }
 
-  // Calculer les scores en mémoire
-const scoreTotalText = calculerScore();
-document.getElementById('score-total').innerText = scoreTotalText;
+  // Calculer les scores 
+  const scoreTotalText = calculerScore();
+  document.getElementById('score-total').innerText = scoreTotalText;
 
-const scoreDot = document.getElementById('score-dot');
-const match = scoreTotalText.match(/(\d+)\s*\/\s*100/);if (scoreDot && match) {
-    scoreDot.style.background = pointCouleur(match[1]);
-} else if (scoreDot) {
-    scoreDot.style.background = '#cccccc';
-}
+  const scoreDot = document.getElementById('score-dot');
+  const match = scoreTotalText.match(/(\d+)\s*\/\s*100/);
+  if (scoreDot && match) {
+      scoreDot.style.background = pointCouleur(match[1]);
+  } else if (scoreDot) {
+      scoreDot.style.background = '#cccccc';
+  }
 
-// Génère la liste des catégories
-const scoresOngletsHTML = calculerdetail();
-const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
-const categories = categoriesData.map((item,idx) => {
-    const strongRegex = /<strong>(.*?)<\/strong>/;
-    const scoreRegex = /: (\d+)\/100/;    
-    const titleMatch = item.match(strongRegex);
-    const scoreMatch = item.match(scoreRegex);
-    let titre = titleMatch ? titleMatch[1].trim() : '';
-    let note = scoreMatch ? scoreMatch[1].trim() : '';
-    let color = pointCouleur(note);// ...dans la map des catégories...
-const icons = [
-  "📊", // Structuration
-  "🛠️", // Qualité
-  "🔗", // Traçabilité
-  "⚖️", // Réglementations
-  "🌍"  // Évaluation externe
+  // Génère la liste des catégories avec détail déroulant
+  const scoresOngletsHTML = calculerdetail();
+  //Cette ligne transforme une grande chaîne HTML en un tableau (ilter(item => item.trim() !== '') := enlever les éléments vides du tableau )
+  const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
+ // Icones des catégories
+  const icons = [
+  '<img src="database_icon.png" alt="Structuration" class="categorie-icon-img">',
+  '<img src="quality_icon.png" alt="Qualité" class="categorie-icon-img">',
+  '<img src="magnifying_glass_icon.png" alt="Traçabilité" class="categorie-icon-img">',
+  '<img src="balance_icon.png" alt="Réglementations" class="categorie-icon-img">',
+  '<img src="group_discussion_icon.png" alt="Évaluation externe" class="categorie-icon-img">'
 ];
+  const categories = categoriesData.map((item, idx) => {
+      const strongRegex = /<strong>(.*?)<\/strong>/;
+      const scoreRegex = /: (\d+)\/100/;
+      const titleMatch = item.match(strongRegex);
+      const scoreMatch = item.match(scoreRegex);
+      let titre = titleMatch ? titleMatch[1].trim() : '';
+      let note = scoreMatch ? scoreMatch[1].trim() : '';
+      let color = pointCouleur(note);
+
+      // Détail des questions pour cette catégorie
+      const onglet = document.getElementsByClassName('tab-content')[idx];
+      const questions = Array.from(onglet.querySelectorAll('p')).map((p, qIdx) => {
+    // Cherche les radios juste après le <p>
+    const radios = [];
+    let el = p.nextElementSibling;
+    while (el && el.tagName === 'LABEL') {
+        radios.push(el.querySelector('input[type="radio"]'));
+        el = el.nextElementSibling;
+    }
+    // Si aucun radio, on ignore ce <p>
+    if (radios.length === 0) return '';
+    // Trouve la radio cochée
+    const checked = radios.find(r => r && r.checked);
+    let pastille = '#cccccc', commentaire = '';
+    if (checked) {
+        if (checked.getAttribute('data-score') === '1') {
+            pastille = '#00d600'; commentaire = "Très bien, critère rempli.";
+        } else if (checked.getAttribute('data-score') === '0.5') {
+            pastille = '#c9f70f'; commentaire = "Critère partiellement rempli, amélioration possible.";
+        } else if (checked.getAttribute('data-score') === '0') {
+            pastille = '#f23311'; commentaire = "Critère non rempli, à améliorer.";
+        } else if (checked.getAttribute('data-score') === 'na') {
+            pastille = '#cccccc'; commentaire = "Non applicable.";
+        }
+    } else {
+        pastille = '#cccccc'; commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
+    }
+    return `<br>
+      <div class="detail-question-row">
+        <span class="detail-question-label">${p.textContent}</span>
+        <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
+      </div>
+      <span class="detail-question-comment">${commentaire}</span><br><br>
+    `;
+}).join('');
+
+
+      // Jauge de score
+    const percent = Math.max(0, Math.min(100, parseInt(note) || 0));
 return `
-  <div class="categorie-score-row">
-    <span class="categorie-icon" style="font-size:1.3em;margin-right:10px;">${icons[idx] || "📁"}</span>
-    <span class="categorie-score-title">${titre}</span>
-    <span class="categorie-score-value">${note}/100</span>        
+  <div class="categorie-score-row detail-toggle" data-idx="${idx}">
+  <br><br>
+    ${arrowChevronRight}
+<span class="categorie-icon" style="margin-right:10px;">${icons[idx] || ""}</span>    <span class="categorie-score-title">${titre}</span>
+    <span class="categorie-score-value">${note}/100</span>
     <span class="score-dot" style="background:${color};"></span>
   </div>
+  <div class="categorie-detail-content" style="display:none;">
+  <br><br>
+    <div class="jauge-bar-container">
+      <div class="jauge-bar-bg"></div>
+      <div class="jauge-bar-indicator" style="left:calc(${percent}%);"></div>
+      <div style="display:flex; justify-content:space-between; width:100%; font-size:0.95em; color:#666; margin-top:2px;">
+        <span>0</span>
+        <span>100</span>
+      </div>
+    </div>
+    <br><br>
+    <div class="detail-questions-list">${questions}</div>
+  </div>
 `;
-});
-document.getElementById('scores-categories').innerHTML = categories.join('');
+  });
+  document.getElementById('scores-categories').innerHTML = categories.join('');
 
-// Affiche la modale
-document.getElementById('modal-resultats').style.display = 'flex';
+  // Ajoute l'interactivité pour la flèche
+  document.querySelectorAll('.detail-toggle').forEach(row => {
+    row.addEventListener('click', function() {
+        const detail = this.nextElementSibling;
+        const arrow = this.querySelector('.detail-arrow');
+if (detail.style.display === 'none') {
+    detail.style.display = 'block';
+    arrow.outerHTML = arrowChevronDown;
+    this.classList.add('no-border');
+    detail.classList.add('with-border');
+} else {
+    detail.style.display = 'none';
+    arrow.outerHTML = arrowChevronRight;
+    this.classList.remove('no-border');
+    detail.classList.remove('with-border');
+}
+    });
+});
+
+  // Affiche la modale
+  document.getElementById('modal-resultats').style.display = 'flex';
 }
 
 
@@ -230,9 +310,7 @@ function calculerScore() {
 
         if (scoreText === "na" || scoreText === null) {
           max--;
-            // Si la réponse est "na" ou non renseignée (ce dernier cas ne devrait pas arriver avec VerifRep),
-            // cette question n'est PAS comptabilisée dans le 'max' total.
-            // Donc, on ne fait rien pour cette question ni pour 'total' ni pour 'max'.
+            // Si la réponse est "na",cette question n'est PAS comptabilisée dans le 'max' total
         } else {
             var score = parseFloat(scoreText); // Passe la variable score en float
             if (!isNaN(score)) { // Si c'est un score numérique
@@ -253,19 +331,18 @@ function calculerScore() {
 }
 
 
-//Fonction qui gère l'affichage des résultats (CORRECTION de la logique 'max' pour chaque onglet)
+//Fonction quui calclule le détail des scores par catégorie 
 function calculerdetail() {
     var onglets = document.getElementsByClassName('tab-content');
     var resultats = []; // Tableau de résultats
 
     // Boucle dans chaque onglet de questions
-    // Note : Le HTML a maintenant 5 onglets de questions (0 à 4) et pas d'onglet "Résultats" à exclure.
     for (var i = 0; i < tabIds.length; i++) { 
         var onglet = onglets[i]; // Utilise l'index direct car onglets est déjà filtré par tab-content
         var inputs = onglet.getElementsByTagName('input'); // Inputs de cet onglet
         
         var total = 0; // Score total pour cet onglet
-    var max = parseInt(onglets[i].getAttribute('data_max'));//Récupère la valeur max de chaque onglet
+        var max = parseInt(onglets[i].getAttribute('data_max'));//Récupère la valeur max de chaque onglet
 
         // Comme pour calculerScore, on collecte les réponses cochées uniques par groupe de question dans cet onglet
         const checkedAnswersOnglet = {};
@@ -359,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
   voirOnglet(tabIds[0]); // Affiche le premier onglet (onglet1) au chargement de la page
 });
 
-       //Fonction qui affiche un point de couleur à coté du resultat 
+//Fonction qui affiche un point de couleur à coté du resultat 
 function pointCouleur(score) {
     const n = parseFloat(score.replace('%', '').replace(',', '.'));
     if (isNaN(n)) return '#cccccc'; // gris si non numérique
@@ -369,7 +446,6 @@ function pointCouleur(score) {
     if (n <= 80 ) return '#00d600'; // vert clair
     return '#0c9c0c'; // vert foncé
 }
-
 
 
 function fermerModalResultats() {

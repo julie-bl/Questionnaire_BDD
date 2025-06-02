@@ -19,7 +19,7 @@ h1, h2, title {
   text-align: center;
 }
 #h2_gauche {
-  text-align: left;
+  text-align: left !important;
   text-decoration: underline;
 }
 #p1 {
@@ -38,10 +38,9 @@ h1, h2, title {
   background: #d3d3d3;
   color: #00010e;
   border: none;
-  border-bottom: none;
   margin-bottom: 0;
   border-radius: 6px 6px 0 0;
-  padding: 10px;
+  padding: 13px;
   cursor: pointer;
   font-size: 1.01em;
 }
@@ -49,9 +48,8 @@ h1, h2, title {
 .tabs button:hover {
   background: #280147;
   color: #fff;
-  border-radius: 6px 6px 0 0;
-  margin-top: 0;
-  padding: 10px;
+  border: none;
+
 }
 
 /* Contenu des onglets */
@@ -80,7 +78,6 @@ input[type="radio"] {
 
 /* Résultats */
 #resultat, #scores-onglets, #score-total {
-  background: #fcfcfc;
   border-radius: 6px;
   padding: 14px;
   margin-top: 35px;
@@ -114,7 +111,6 @@ button:hover, #back-button:hover {
   border-radius: 50%;
   margin-left: 10px;
   vertical-align: middle;
-  border: 2px solid #280147;
   box-shadow: 0 0 2px #0002;
 }
 .categorie-score-row .score-dot {
@@ -122,6 +118,13 @@ button:hover, #back-button:hover {
 }
 
 /* Modale résultats */
+.categorie-icon-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
 #modal-resultats {
   display: none;
   position: fixed;
@@ -134,7 +137,7 @@ button:hover, #back-button:hover {
   padding: 0;
 }
 #modal-resultats .modal-content {
-  background: #fff;
+  background: #ffffff;
   border-radius: 0;
   max-width: none;
   width: 100vw;
@@ -158,14 +161,17 @@ button:hover, #back-button:hover {
   margin-bottom: 25px;
 }
 #scores-categories {
+  border-top: 2px solid #00010e;
   width: 100%;
-  margin-top: 0;
+  margin-top: 20px;
 }
 .categorie-score-row {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
   font-size: 1.1em;
+  border-bottom: 1px solid #280147;
+  padding: 20px;
 }
 .categorie-score-title {
   flex: 1;
@@ -176,6 +182,12 @@ button:hover, #back-button:hover {
   min-width: 40px;
   text-align: right;
 }
+.categorie-score-row.no-border {
+  border-bottom: none !important;
+}
+.categorie-detail-content.with-border {
+  border-bottom: 1px solid #280147;
+}
 .close-modal {
   position: sticky;
   top: 10px;
@@ -183,4 +195,141 @@ button:hover, #back-button:hover {
   align-self: flex-end;
   background: #280147;
   z-index: 10;
+}
+
+/* Jauge de score catégorie : rectangle fin et moins large */
+.jauge-bar-container {
+  margin: 18px 0 18px 0;
+  width: 100%;
+  max-width: 340px;
+  min-width: 180px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  height: 32px; /* pour laisser la place au curseur */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.jauge-bar-bg {
+  position: relative;
+  width: 100%;
+  height: 14px;
+ background: linear-gradient(
+    to right,
+    #f23311 0%,   #f23311 20%,
+    #ffa81c 20%,  #ffa81c 40%,
+    #c9f70f 40%,  #c9f70f 60%,
+    #00d600 60%,  #00d600 80%,
+    #0c9c0c 80%,  #0c9c0c 100%
+  );
+  overflow: hidden;
+  box-shadow: 0 1px 4px #0001;
+}
+
+.jauge-bar-indicator {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 12px solid #280147;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+  transition: left 0.4s;
+}
+
+.jauge-bar-label {
+  text-align: center;
+  font-size: 1em;
+  margin-top: 4px;
+  color: #280147;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Détail question : pastille à droite, commentaire dessous */
+.detail-question-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  font-size: 0.98em;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.detail-question-label {
+  flex: 1;
+  margin-left: 0;
+  margin-right: 10px;
+  text-align: left;
+}
+.detail-question-dot {
+  margin-left: 10px;
+  margin-right: 0;
+  align-self: flex-start;
+}
+.detail-question-comment {
+  margin-left: 0;
+  margin-top: 2px;
+  font-style: italic;
+  color: #280147;
+  font-size: 0.95em;
+  width: 100%;
+  display: block;
+  text-align: left;
+}
+.detail-questions-list {
+  width: 100%;
+}
+
+/* Responsive pour mobile et tablette */
+@media (max-width: 800px) {
+  body, #body_result {
+    margin: 5vw;
+    font-size: 1em;
+  }
+  .tab-content {
+    padding: 10px;
+    font-size: 1em;
+  }
+  .tabs {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .tabs button {
+    font-size: 0.95em;
+    padding: 8px;
+    min-width: 90px;
+  }
+  h1, h2 {
+    font-size: 1.1em;
+  }
+  .modal-content {
+    padding: 10px;
+    width: 100vw;
+    height: 100vh;
+  }
+  .categorie-score-row {
+    font-size: 1em;
+  }
+  .score-dot, .categorie-score-row .score-dot {
+    width: 14px;
+    height: 14px;
+  }
+  button, #back-button {
+    font-size: 1em;
+    padding: 8px;
+  }
+    .jauge-bar-container {
+    width: 95%;
+    min-width: 100px;
+    max-width: 98vw;
+  }
+  .detail-question-row {
+    font-size: 0.97em;
+  }
 }
