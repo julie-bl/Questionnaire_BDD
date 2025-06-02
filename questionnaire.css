@@ -19,9 +19,12 @@ h1, h2, title {
   text-align: center;
 }
 #h2_gauche {
-  text-align: left !important;
+ text-align: left !important;
   text-decoration: underline;
+  display: block;
+  width: 100%;
 }
+
 #p1 {
   text-align: center;
   font-size: 1.01em;
@@ -172,11 +175,30 @@ button:hover, #back-button:hover {
   font-size: 1.1em;
   border-bottom: 1px solid #280147;
   padding: 20px;
+  justify-content: space-between;
+}
+
+.categorie-score-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.categorie-icon {
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .categorie-score-title {
-  flex: 1;
   font-weight: bold;
   text-align: left;
+  display: inline-block;
+}
+.categorie-score-values {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 80px;
+  justify-content: flex-end;
 }
 .categorie-score-value {
   min-width: 40px;
@@ -197,7 +219,7 @@ button:hover, #back-button:hover {
   z-index: 10;
 }
 
-/* Jauge de score catégorie : rectangle fin et moins large */
+/* Jauge de score catégorie */
 .jauge-bar-container {
   margin: 18px 0 18px 0;
   width: 100%;
@@ -206,7 +228,7 @@ button:hover, #back-button:hover {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  height: 32px; /* pour laisser la place au curseur */
+  height: 32px; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -215,7 +237,7 @@ button:hover, #back-button:hover {
 .jauge-bar-bg {
   position: relative;
   width: 100%;
-  height: 14px;
+  height: 6px;
  background: linear-gradient(
     to right,
     #f23311 0%,   #f23311 20%,
@@ -224,6 +246,7 @@ button:hover, #back-button:hover {
     #00d600 60%,  #00d600 80%,
     #0c9c0c 80%,  #0c9c0c 100%
   );
+  border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 1px 4px #0001;
 }
@@ -252,7 +275,7 @@ button:hover, #back-button:hover {
   letter-spacing: 1px;
 }
 
-/* Détail question : pastille à droite, commentaire dessous */
+/* Détail question */
 .detail-question-row {
   display: flex;
   align-items: flex-start;
@@ -313,23 +336,24 @@ button:hover, #back-button:hover {
     width: 100vw;
     height: 100vh;
   }
-  .categorie-score-row {
+
+ .categorie-score-title {
     font-size: 1em;
+    margin-bottom: 0;
+    display: inline-block;
   }
-  .score-dot, .categorie-score-row .score-dot {
-    width: 14px;
-    height: 14px;
+  .categorie-score-values {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-left: 0;
+    margin-top: 2px;
+    width: 100%;
+    justify-content: flex-end; 
   }
-  button, #back-button {
-    font-size: 1em;
-    padding: 8px;
-  }
-    .jauge-bar-container {
-    width: 95%;
-    min-width: 100px;
-    max-width: 98vw;
-  }
-  .detail-question-row {
-    font-size: 0.97em;
+  .categorie-score-value {
+    min-width: 0;
+    text-align: right;
   }
 }

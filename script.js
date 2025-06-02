@@ -204,11 +204,16 @@ const currentTabElement = document.getElementById(currentTabId);
       const questions = Array.from(onglet.querySelectorAll('p')).map((p, qIdx) => {
     // Cherche les radios juste après le <p>
     const radios = [];
-    let el = p.nextElementSibling;
-    while (el && el.tagName === 'LABEL') {
+   let el = p.nextElementSibling;
+while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === 'DIV' && el.classList.contains('radio-group')))) {
+    if (el.tagName === 'LABEL') {
         radios.push(el.querySelector('input[type="radio"]'));
-        el = el.nextElementSibling;
+    } else if (el.tagName === 'DIV' && el.classList.contains('radio-group')) {
+        el.querySelectorAll('input[type="radio"]').forEach(radio => radios.push(radio));
     }
+    // Passe à l'élément suivant
+    el = el.nextElementSibling;
+}
     // Si aucun radio, on ignore ce <p>
     if (radios.length === 0) return '';
     // Trouve la radio cochée
@@ -217,6 +222,8 @@ const currentTabElement = document.getElementById(currentTabId);
     if (checked) {
         if (checked.getAttribute('data-score') === '1') {
             pastille = '#00d600'; commentaire = "Très bien, critère rempli.";
+        } else if (checked.getAttribute('data-score') === '0.75') {
+        pastille = '#c9f70f'; commentaire = "Critère partiellement rempli, amélioration possible.";
         } else if (checked.getAttribute('data-score') === '0.5') {
             pastille = '#c9f70f'; commentaire = "Critère partiellement rempli, amélioration possible.";
         } else if (checked.getAttribute('data-score') === '0') {
@@ -241,14 +248,18 @@ const currentTabElement = document.getElementById(currentTabId);
     const percent = Math.max(0, Math.min(100, parseInt(note) || 0));
 return `
   <div class="categorie-score-row detail-toggle" data-idx="${idx}">
-  <br><br>
-    ${arrowChevronRight}
-<span class="categorie-icon" style="margin-right:10px;">${icons[idx] || ""}</span>    <span class="categorie-score-title">${titre}</span>
-    <span class="categorie-score-value">${note}/100</span>
-    <span class="score-dot" style="background:${color};"></span>
+    <div class="categorie-score-header">
+      ${arrowChevronRight}
+      <span class="categorie-icon" style="margin-right:10px;">${icons[idx] || ""}</span>
+      <span class="categorie-score-title">${titre}</span>
+    </div>
+    <div class="categorie-score-values">
+      <span class="categorie-score-value">${note}/100</span>
+      <span class="score-dot" style="background:${color};"></span>
+    </div>
   </div>
   <div class="categorie-detail-content" style="display:none;">
-  <br><br>
+    <br><br>
     <div class="jauge-bar-container">
       <div class="jauge-bar-bg"></div>
       <div class="jauge-bar-indicator" style="left:calc(${percent}%);"></div>
@@ -262,6 +273,7 @@ return `
   </div>
 `;
   });
+  
   document.getElementById('scores-categories').innerHTML = categories.join('');
 
   // Ajoute l'interactivité pour la flèche
