@@ -2,6 +2,137 @@
 let currentTab = 0; // Index de l'onglet actif (0 pour le premier, 1 pour le deuxième, etc.)
 const tabIds = ['onglet1', 'onglet2', 'onglet3', 'onglet4', 'onglet5']; // Liste des IDs d'onglet de questions (onglet6 "Résultats" est supprimé de la navigation)
 
+//Commentaires de chaque question 
+const commentairesQuestions = {
+  q1: {
+    "1": "Il existe une publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
+    "0.5": "Il n'existe pas encore de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
+    "0": "Il n'existe pas de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture."
+  },
+  q1b: {
+    "0.5": "Un document interne existe, c'est un bon début.",
+    "0": "Aucun document accessible avec au minimum la population cible, les critères d'inclusion, les variables collectées, la modalité de collecte et le contrôle qualité n'est accessible.",
+  },
+  q2: {
+    "1": "La base est partageable avec d'autres utilisateurs que votre équipe.",
+    "0": "La base n'est pas partageable, cela limite son impact.",
+  },
+  q3: {
+    "1": "Il esxiste une procédure formalisée pour accéder à la base de données.",
+    "0": "Il n'esxiste aucune procédure formalisée pour accéder à la base de données.",
+  },
+  q4: {
+    "1": "Il existe une instance scientifique pour l'évaluation des projets portant sur la base de données",
+    "0": "Il n'existe aucune instance scientifique pour l'évaluation des projets portant sur la base de données",
+  },
+  q5: {
+    "1": "Une équipe est disponible pour accompagner l'utilisabilité des données.",
+    "0": "Acune équipe n'est disponible pour accompagner l'utilisabilité des données.",
+  },
+  q6: {
+    "1": "Il existe un dictionnaire des variables",
+    "0": "Il n'existe aucun dictionnaire des variables.",
+  },
+  q6b: {
+    "1": "Les modifications au cours du temps des variables de ce dictionnaire sont intégrées ",
+    "0": "Les modifications au cours du temps des variables de ce dictionnaire ne sont intégrées (ou réponse non à la question précédente).",
+    "na": "Non applicable car il s'agit d'une étude transversale."
+  },
+  q7: {
+    "1": "Il existe une formation du personnel de collecte.",
+    "0": "Il n'existe aucune formation du personnel de collecte.",
+    "na": "Non applicable pour cette question."
+  },
+  q8: {
+    "1": "Il existe un protocole formalisé pour standardiser la collecte.",
+    "0": "Il n'existe aucun protocole formalisé pour standardiser la collecte.",
+  },
+  q9: {
+    "1": "Il existe des contrôles de cohérence à la collecte.",
+    "0": "Il n'existe pas de contrôles de cohérence à la collecte.",
+  },
+  q10: {
+    "1": "Il existe des audits de qualité internes.",
+    "0": "Il n'existe pas d'audits de qualité internes.",
+  },
+  q11: {
+    "1": "Il existe des audits de qualité externes.",
+    "0": "Il n'existe pas d'audits de qualité externes.",
+  },
+  q12: {
+    "1": "Des classifications standardisées sont utilisées.",
+    "0": "Aucunes classifications standardisées ne sont utilisées..",
+    "na": "Non applicable pour cette question."
+  },
+  q13: {
+    "1": "Les instruments de mesure sont régulièrement standardisés, calibrés, vérifiés.",
+    "0": "Les instruments de mesure ne sont pas régulièrement standardisés, calibrés, vérifiés.",
+    "na": "Non applicable pour cette question."
+  },
+  q14: {
+    "1": "Pour les collections biologiques, il existe des consignes de traitement et de stockage des échantillons.",
+    "0": "Pour les collections biologiques, il n'existe pas de consignes de traitement et de stockage des échantillons.",
+    "na": "Non applicable pour cette question."
+  },
+  q15: {
+    "1": "Pour l'imgagerie, il existe des consignes de réalisation des clichés.",
+    "0": "Pour l'imgagerie, il n'existe aucunes consignes de réalisation des clichés.",
+    "na": "Non applicable pour cette question."
+  },
+  q16: {
+    "1": "Il existe un cahier des charges de data management décrivant le processus de mise en qualité des données.",
+    "0": "Il n'existe aucun cahier des charges de data management décrivant le processus de mise en qualité des données.",
+  },
+  q17: {
+    "1": "Les modifications apportées aux données après la collecte sont traçables.",
+    "0": "Les modifications apportées aux données après la collecte ne sont pas traçables.",
+  },
+  q18: {
+    "1": "Il est possible d'accéder à la fois aux données brutes et aux données travaillées.",
+    "0": "Il est impossible d'accéder à la fois aux données brutes et aux données travaillées.",
+    "na": "Non applicable pour cette question."
+  },
+   q19: {
+    "1": "Il existe des indicateurs de qualité régulièrement calculés à partir des données collectées.",
+    "0": "Il n'y a pas d'indicateurs de qualité régulièrement calculés à partir des données collectées.",
+  },
+   q20: {
+    "1": "La base de données est engagée dans un processus nominatif.",
+    "O.5": "La base de données est en cours d'engagement dans un processus nominatif.",
+    "0": "La base de données n'est pas engagée dans un processus nominatif.",
+  },
+   q21: {
+    "1": "Le régime juridique de la base de données décalrée à la CNIL est un entrepôt de données.",
+    "0.75": "Le régime juridique de la base de données décalrée à la CNIL est une demande changement de statut d'étude à celui d'entrepôt.",
+    "0.5": "Le régime juridique de la base de données décalrée à la CNIL est une recherche, une étude ou une évaluation ponctuelle."
+  },
+   q22: {
+    "1": "L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données'.",
+    "0": "L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données.",
+  },
+   q22b: {
+    "1": "Les canaux des patients sont fonctionnels.",
+    "0": "Les canaux des patients ne sont pas fonctionnels (ou réponse non à la question précédente).",
+  },
+   q23: {
+    "1": "La base de données a fait l'objet d'une évaluation par un organisme indépendant.",
+    "0": "La base de données n'a pas fait l'objet d'une évaluation par un organisme indépendant.",
+  },
+   q24: {
+    "1": "La liste des projets initiés à partir de la base est publiquement accessible.",
+    "0": "La liste des projets initiés à partir de la base n'est pas publiquement accessible.",
+  },
+   q25: {
+    "1": "La liste des publications scientifiques issues de la base avec les principaux résultats est publiquement accessible.",
+    "0": "La liste des publications scientifiques issues de la base avec les principaux résultats n'est pas publiquement accessible.",
+  },
+   q26: {
+    "1": "Il existe une communauté structurée d'utilisateurs de la base de données.",
+    "0": "Il n'existe aucune communauté structurée d'utilisateurs de la base de données.",
+  }
+
+}
+
 // Gestion de l'affichage des onglets et de l'état actif des boutons
 function voirOnglet(id) {
   var onglets = document.getElementsByClassName('tab-content');
@@ -13,8 +144,8 @@ function voirOnglet(id) {
     if (tabButtons[i]) { // S'assurer que le bouton existe 
         tabButtons[i].classList.remove('active');//Enlève le CSS "actif" d'un onglet désactivé
     }
-  }
-
+  } 
+  
   // Affiche l'onglet cliqué
   var actif = document.getElementById(id);
   actif.style.display = 'block';
@@ -114,39 +245,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const q6bContainer = document.getElementById('q6b-container');
   const baseMaxQ6 = 6; // data_max sans q6b
   q6Radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'oui') {
-        q6bContainer.style.display = '';
-        onglet1.setAttribute('data_max', baseMaxQ6 + 1); // Ajoute q6b
-      } else {
-        q6bContainer.style.display = 'none';
-        onglet1.setAttribute('data_max', baseMaxQ6);
-        // Décocher q6b si caché
-        const q6bRadios = onglet1.querySelectorAll('input[name="q6b"]');
-        q6bRadios.forEach(rb => rb.checked = false);
-      }
-    });
+  radio.addEventListener('change', () => {
+    if (radio.value === 'oui') {
+      q6bContainer.style.display = '';
+    } else {
+      q6bContainer.style.display = 'none';
+      // Coche "non" pour q6b
+      const q6bRadios = onglet1.querySelectorAll('input[name="q6b"]');
+      q6bRadios.forEach(rb => {
+        rb.checked = (rb.value === 'non');
+      });
+    }
   });
+});
 
   // Gestion q22b ( choix "si oui (...)" ") 
   const onglet4 = document.getElementById('onglet4');
   const q22Radios = onglet4.querySelectorAll('input[name="q22"]');
   const q22bContainer = document.getElementById('q22b-container');
   const baseMaxQ22 = 3; // data_max sans q22b
-  q22Radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'oui') {
-        q22bContainer.style.display = '';
-        onglet4.setAttribute('data_max', baseMaxQ22 + 1); // Ajoute q22b
-      } else {
-        q22bContainer.style.display = 'none';
-        onglet4.setAttribute('data_max', baseMaxQ22);
-        // Décocher q22b si caché
-        const q22bRadios = onglet4.querySelectorAll('input[name="q22b"]');
-        q22bRadios.forEach(rb => rb.checked = false);
-      }
-    });
+ q22Radios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (radio.value === 'oui') {
+      q22bContainer.style.display = '';
+    } else {
+      q22bContainer.style.display = 'none';
+      // Coche "non" pour q22b
+      const q22bRadios = onglet4.querySelectorAll('input[name="q22b"]');
+      q22bRadios.forEach(rb => {
+        rb.checked = (rb.value === 'non');
+      });
+    }
   });
+});
 });
 
 
@@ -198,7 +329,7 @@ const currentTabElement = document.getElementById(currentTabId);
       let titre = titleMatch ? titleMatch[1].trim() : '';
       let note = scoreMatch ? scoreMatch[1].trim() : '';
       let color = pointCouleur(note);
-
+      
       // Détail des questions pour cette catégorie
       const onglet = document.getElementsByClassName('tab-content')[idx];
       const questions = Array.from(onglet.querySelectorAll('p')).map((p, qIdx) => {
@@ -219,28 +350,38 @@ while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === '
     // Trouve la radio cochée
     const checked = radios.find(r => r && r.checked);
     let pastille = '#cccccc', commentaire = '';
-    if (checked) {
-        if (checked.getAttribute('data-score') === '1') {
-            pastille = '#00d600'; commentaire = "Très bien, critère rempli.";
-        } else if (checked.getAttribute('data-score') === '0.75') {
-        pastille = '#c9f70f'; commentaire = "Critère partiellement rempli, amélioration possible.";
-        } else if (checked.getAttribute('data-score') === '0.5') {
-            pastille = '#c9f70f'; commentaire = "Critère partiellement rempli, amélioration possible.";
-        } else if (checked.getAttribute('data-score') === '0') {
-            pastille = '#f23311'; commentaire = "Critère non rempli, à améliorer.";
-        } else if (checked.getAttribute('data-score') === 'na') {
-            pastille = '#cccccc'; commentaire = "Non applicable.";
-        }
+    let questionName = '';
+  // Trouve le nom de la question (attribut name du radio)
+  if (radios[0]) questionName = radios[0].name;
+
+  if (checked) {
+    const score = checked.getAttribute('data-score');
+    // Utilise le mapping si disponible, sinon commentaire générique
+    if (commentairesQuestions[questionName] && commentairesQuestions[questionName][score] !== undefined) {
+      commentaire = commentairesQuestions[questionName][score];
     } else {
-        pastille = '#cccccc'; commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
+      // Fallback générique
+      if (score === "1") commentaire = "Critère rempli.";
+      else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli.";
+      else if (score === "0") commentaire = "Critère non rempli.";
+      else if (score === "na") commentaire = "Non applicable.";
+      else commentaire = "Réponse inattendue.";
     }
-    return `<br>
-      <div class="detail-question-row">
-        <span class="detail-question-label">${p.textContent}</span>
-        <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
-      </div>
-      <span class="detail-question-comment">${commentaire}</span><br><br>
-    `;
+    // Couleur pastille 
+    if (score === "1") pastille = '#00d600';
+    else if (score === "0.75" || score === "0.5") pastille = '#c9f70f';
+    else if (score === "0") pastille = '#f23311';
+    else if (score === "na") pastille = '#cccccc';
+  } else {
+    pastille = '#cccccc';
+    commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
+  }
+  return `<br>
+    <div class="detail-question-row">
+      <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
+    </div>
+    <span class="detail-question-comment">${commentaire}</span><br><br>
+  `;
 }).join('');
 
 
@@ -535,7 +676,7 @@ function telechargerPDF() {
         const score = (item.match(/: (\d+)\s*\/\s*100/) || [])[1] || 'N/A';
         let commentaire = (item.match(/: \d+\s*\/\s*100<br><br>(.*)/s) || [])[1] || '';
         commentaire = commentaire.replace(/<br>/g, '').trim();
-        return [title, score + '/100', commentaire];
+        return [title, score + ' /100', commentaire];
     });
 
     // Score global

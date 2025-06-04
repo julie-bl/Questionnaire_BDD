@@ -3,12 +3,8 @@ body, #body_result {
   font-family: Arial;
   color: #00010e;
   margin: 30px;
-}
-
-body {
   background: #ffffff;
 }
-
 #body_result {
   background: #27014711;
 }
@@ -19,12 +15,11 @@ h1, h2, title {
   text-align: center;
 }
 #h2_gauche {
- text-align: left !important;
+  text-align: left !important;
   text-decoration: underline;
   display: block;
   width: 100%;
 }
-
 #p1 {
   text-align: center;
   font-size: 1.01em;
@@ -36,34 +31,32 @@ h1, h2, title {
   gap: 10px;
   margin-bottom: 0px;
   margin-top: 25px;
+  flex-wrap: nowrap;
 }
 .tabs button {
   background: #d3d3d3;
   color: #00010e;
   border: none;
-  margin-bottom: 0;
   border-radius: 6px 6px 0 0;
   padding: 13px;
   cursor: pointer;
   font-size: 1.01em;
+  margin-bottom: 0;
 }
 .tabs button.active,
 .tabs button:hover {
-  background: #280147;
+  background: #4b237b;
   color: #fff;
-  border: none;
-
 }
 
 /* Contenu des onglets */
 .tab-content {
-  background: #27014711;
-  border: 2px solid #280147;
-  border-top: 3px solid #280147;
-  border-radius: 0px 0px 6px 6px;
+  background: #4b237b0c;
+  border: 2px solid #4b237b;
+  border-top: 3px solid #4b237b;
+  border-radius: 0 0 6px 6px;
   padding: 30px;
-  margin-bottom: 18px;
-  margin-top: 0px;
+  margin: 0 0 18px 0;
 }
 
 /* Questions */
@@ -83,27 +76,24 @@ input[type="radio"] {
 #resultat, #scores-onglets, #score-total {
   border-radius: 6px;
   padding: 14px;
-  margin-top: 35px;
-  margin-bottom: 35px;
-  margin-left: 30px;
+  margin: 35px 0 35px 30px;
   font-size: 1.4em;
 }
 
 /* Boutons */
 button, #back-button {
-  background-color: #280147;
+  background-color: #4b237b;
   color: white;
   border-radius: 10px;
   padding: 10px;
-  border: 2px solid black;
+  border: 2px solid #4b237b;
 }
 button:hover, #back-button:hover {
   background-color: #fff;
-  color: #280147;
-  border: 2px solid #280147;
+  color: #4b237b;
 }
 #back-button {
-  border: 2px solid #280147;
+  border: 2px solid #4b237b;
 }
 
 /* Score dot (pastille) */
@@ -115,9 +105,6 @@ button:hover, #back-button:hover {
   margin-left: 10px;
   vertical-align: middle;
   box-shadow: 0 0 2px #0002;
-}
-.categorie-score-row .score-dot {
-  margin-left: 10px;
 }
 
 /* Modale résultats */
@@ -140,7 +127,7 @@ button:hover, #back-button:hover {
   padding: 0;
 }
 #modal-resultats .modal-content {
-  background: #ffffff;
+  background: #fff;
   border-radius: 0;
   max-width: none;
   width: 100vw;
@@ -168,16 +155,17 @@ button:hover, #back-button:hover {
   width: 100%;
   margin-top: 20px;
 }
+
+/* Catégorie score */
 .categorie-score-row {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
   font-size: 1.1em;
-  border-bottom: 1px solid #280147;
+  border-bottom: 1px solid #4b237b;
   padding: 20px;
   justify-content: space-between;
 }
-
 .categorie-score-header {
   display: flex;
   align-items: center;
@@ -191,7 +179,6 @@ button:hover, #back-button:hover {
 .categorie-score-title {
   font-weight: bold;
   text-align: left;
-  display: inline-block;
 }
 .categorie-score-values {
   display: flex;
@@ -199,6 +186,7 @@ button:hover, #back-button:hover {
   gap: 10px;
   min-width: 80px;
   justify-content: flex-end;
+  width: 100%;
 }
 .categorie-score-value {
   min-width: 40px;
@@ -208,37 +196,34 @@ button:hover, #back-button:hover {
   border-bottom: none !important;
 }
 .categorie-detail-content.with-border {
-  border-bottom: 1px solid #280147;
+  border-bottom: 1px solid #4b237b;
 }
 .close-modal {
   position: sticky;
   top: 10px;
   right: 10px;
   align-self: flex-end;
-  background: #280147;
+  background: #4b237b;
   z-index: 10;
 }
 
 /* Jauge de score catégorie */
 .jauge-bar-container {
-  margin: 18px 0 18px 0;
+  margin: 18px auto;
   width: 100%;
   max-width: 340px;
   min-width: 180px;
-  margin-left: auto;
-  margin-right: auto;
   position: relative;
   height: 32px; 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .jauge-bar-bg {
   position: relative;
   width: 100%;
   height: 6px;
- background: linear-gradient(
+  background: linear-gradient(
     to right,
     #f23311 0%,   #f23311 20%,
     #ffa81c 20%,  #ffa81c 40%,
@@ -250,7 +235,6 @@ button:hover, #back-button:hover {
   overflow: hidden;
   box-shadow: 0 1px 4px #0001;
 }
-
 .jauge-bar-indicator {
   position: absolute;
   top: -12px;
@@ -259,18 +243,17 @@ button:hover, #back-button:hover {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 12px solid #280147;
+  border-top: 12px solid #4b237b;
   transform: translateX(-50%);
   z-index: 2;
   pointer-events: none;
   transition: left 0.4s;
 }
-
 .jauge-bar-label {
   text-align: center;
   font-size: 1em;
   margin-top: 4px;
-  color: #280147;
+  color: #4b237b;
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -286,20 +269,17 @@ button:hover, #back-button:hover {
 }
 .detail-question-label {
   flex: 1;
-  margin-left: 0;
   margin-right: 10px;
   text-align: left;
 }
 .detail-question-dot {
   margin-left: 10px;
-  margin-right: 0;
   align-self: flex-start;
 }
 .detail-question-comment {
-  margin-left: 0;
   margin-top: 2px;
   font-style: italic;
-  color: #280147;
+  color: #4b237b;
   font-size: 0.95em;
   width: 100%;
   display: block;
@@ -336,21 +316,11 @@ button:hover, #back-button:hover {
     width: 100vw;
     height: 100vh;
   }
-
- .categorie-score-title {
+  .categorie-score-title {
     font-size: 1em;
-    margin-bottom: 0;
-    display: inline-block;
   }
   .categorie-score-values {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    margin-left: 0;
-    margin-top: 2px;
-    width: 100%;
-    justify-content: flex-end; 
+    justify-content: flex-end;
   }
   .categorie-score-value {
     min-width: 0;
