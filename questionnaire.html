@@ -232,16 +232,16 @@
 <!-- Modale résultats -->
 <div id="modal-resultats">
   <div class="modal-content">
-    <button onclick="fermerModalResultats()" class="close-modal">Fermer</button>
+    <button onclick="fermerModalResultats()" class="close-modal">x</button>
     <br>
-    <h1>Indice de qualité de la base de donnée</h1>
+    <h1 id="h2_gauche">Score qualité</h1>
     <br>
     <div class="score-global">
       <span id="score-total"></span>
       <span id="score-dot" class="score-dot"></span>
+      <div id="score-global-comment" class="score-global-comment"></div>
     </div>
-          <br><br>
-          <h2 id="h2_gauche">Catégories</h2>
+        
     <div id="scores-categories"></div>
     <br>
     <button onclick="telechargerPDF()">Télécharger les résultats en PDF</button>

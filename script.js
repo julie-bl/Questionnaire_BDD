@@ -2,6 +2,10 @@
 let currentTab = 0; // Index de l'onglet actif (0 pour le premier, 1 pour le deuxième, etc.)
 const tabIds = ['onglet1', 'onglet2', 'onglet3', 'onglet4', 'onglet5']; // Liste des IDs d'onglet de questions (onglet6 "Résultats" est supprimé de la navigation)
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //Commentaires de chaque question 
 const commentairesQuestions = {
   q1: {
@@ -133,6 +137,10 @@ const commentairesQuestions = {
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Gestion de l'affichage des onglets et de l'état actif des boutons
 function voirOnglet(id) {
   var onglets = document.getElementsByClassName('tab-content');
@@ -145,7 +153,6 @@ function voirOnglet(id) {
         tabButtons[i].classList.remove('active');//Enlève le CSS "actif" d'un onglet désactivé
     }
   } 
-  
   // Affiche l'onglet cliqué
   var actif = document.getElementById(id);
   actif.style.display = 'block';
@@ -157,6 +164,10 @@ function voirOnglet(id) {
       currentTab = tabIndex; // Met à jour l'index de l'onglet courant
   }
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Fonction pour afficher un onglet spécifique via son ID (utilisé pour les boutons du haut)
 function voirOngletSpe(id) {
@@ -193,7 +204,6 @@ function VerifRep(tabElement) {
             radioGroups[name] = true;
         }
     });
-
     // Vérifie si tous les groupes de radio visibles ont au moins une réponse cochée
     for (const groupName in radioGroups) {
         if (!radioGroups[groupName]) {
@@ -202,6 +212,10 @@ function VerifRep(tabElement) {
     }
     return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Fonction pour passer à l'onglet suivant
 function passerOnglet() {
@@ -219,7 +233,15 @@ function passerOnglet() {
   }
 }
 
+// Initialise l'affichage au chargement de la page pour montrer le premier onglet
+document.addEventListener('DOMContentLoaded', () => {
+  voirOnglet(tabIds[0]); // Affiche le premier onglet (onglet1) au chargement de la page
+});
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gestion des quetsions "si oui" et "si non"
 document.addEventListener('DOMContentLoaded', () => {
   voirOnglet(tabIds[0]);
 
@@ -243,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gestion q6b ( choix "si oui (...)" ") 
   const q6Radios = onglet1.querySelectorAll('input[name="q6"]');
   const q6bContainer = document.getElementById('q6b-container');
-  const baseMaxQ6 = 6; // data_max sans q6b
   q6Radios.forEach(radio => {
   radio.addEventListener('change', () => {
     if (radio.value === 'oui') {
@@ -263,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const onglet4 = document.getElementById('onglet4');
   const q22Radios = onglet4.querySelectorAll('input[name="q22"]');
   const q22bContainer = document.getElementById('q22b-container');
-  const baseMaxQ22 = 3; // data_max sans q22b
  q22Radios.forEach(radio => {
   radio.addEventListener('change', () => {
     if (radio.value === 'oui') {
@@ -279,6 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //Fonction qui affiche les résultats
@@ -308,6 +331,23 @@ const currentTabElement = document.getElementById(currentTabId);
   } else if (scoreDot) {
       scoreDot.style.background = '#cccccc';
   }
+
+// ...après avoir mis à jour scoreTotalText et scoreDot...
+const scoreGlobalComment = document.getElementById('score-global-comment');
+let commentaireYuka = "";
+const matchScore = scoreTotalText.match(/(\d+)\s*\/\s*100/);
+if (matchScore) {
+    const score = parseInt(matchScore[1]);
+    if (score <= 20) commentaireYuka = "Mauvais";
+    else if (score <= 40) commentaireYuka = "Médiocre";
+    else if (score <= 60) commentaireYuka = "Moyen";
+    else if (score <= 80) commentaireYuka = "Bon";
+    else commentaireYuka = "Excellent";
+} else {
+    commentaireYuka = "";
+}
+if (scoreGlobalComment) scoreGlobalComment.textContent = commentaireYuka;
+
 
   // Génère la liste des catégories avec détail déroulant
   const scoresOngletsHTML = calculerdetail();
@@ -360,7 +400,7 @@ while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === '
     if (commentairesQuestions[questionName] && commentairesQuestions[questionName][score] !== undefined) {
       commentaire = commentairesQuestions[questionName][score];
     } else {
-      // Fallback générique
+      // Commentaires générique
       if (score === "1") commentaire = "Critère rempli.";
       else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli.";
       else if (score === "0") commentaire = "Critère non rempli.";
@@ -376,11 +416,12 @@ while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === '
     pastille = '#cccccc';
     commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
   }
-  return `<br>
+  return `
     <div class="detail-question-row">
+      <span class="detail-question-comment">${commentaire}</span>
       <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
     </div>
-    <span class="detail-question-comment">${commentaire}</span><br><br>
+    <br>
   `;
 }).join('');
 
@@ -404,7 +445,7 @@ return `
     <div class="jauge-bar-container">
       <div class="jauge-bar-bg"></div>
       <div class="jauge-bar-indicator" style="left:calc(${percent}%);"></div>
-      <div style="display:flex; justify-content:space-between; width:100%; font-size:0.95em; color:#666; margin-top:2px;">
+      <div style="display:flex; justify-content:space-between; width:100%; font-size:0.95em; color:#666; margin-top:0px;">
         <span>0</span>
         <span>100</span>
       </div>
@@ -439,6 +480,9 @@ if (detail.style.display === 'none') {
   // Affiche la modale
   document.getElementById('modal-resultats').style.display = 'flex';
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //Fonction qui calcul le score global 
@@ -480,9 +524,11 @@ function calculerScore() {
         pourcentageGlobal = Math.round((total / max) * 100);
     }
 
-     return "Score total : " + pourcentageGlobal + "/100";
+     return pourcentageGlobal + "/100";
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Fonction quui calclule le détail des scores par catégorie 
 function calculerdetail() {
@@ -584,10 +630,10 @@ function calculerdetail() {
 
    return resultats.join("");
 }
-// Initialise l'affichage au chargement de la page pour montrer le premier onglet
-document.addEventListener('DOMContentLoaded', () => {
-  voirOnglet(tabIds[0]); // Affiche le premier onglet (onglet1) au chargement de la page
-});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Fonction qui affiche un point de couleur à coté du resultat 
 function pointCouleur(score) {
@@ -600,13 +646,18 @@ function pointCouleur(score) {
     return '#0c9c0c'; // vert foncé
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function fermerModalResultats() {
     document.getElementById('modal-resultats').style.display = 'none';
 }
 
-// Fonction pour télécharger le PDF depuis la modale
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// Fonction pour télécharger le PDF depuis la modale
 function telechargerPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
@@ -724,3 +775,19 @@ function telechargerPDF() {
     //Enregistrement du PDF
     doc.save('rapport_scores_qualite.pdf');
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Fermer la modale si on clique sur l'overlay (en dehors du contenu)
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('modal-resultats');
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        fermerModalResultats();
+      }
+    });
+  }
+});
