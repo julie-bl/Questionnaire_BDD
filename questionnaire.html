@@ -233,7 +233,7 @@
 <div id="modal-resultats">
   <div class="modal-content">
     <button onclick="fermerModalResultats()" class="close-modal">x</button>
-    <br>
+
     <h1 id="h2_gauche">Score qualité</h1>
     <br>
     <div class="score-global">
@@ -243,10 +243,33 @@
     </div>
         
     <div id="scores-categories"></div>
+    <div class="Options">
+    <h2 id="h2_gauche">Options</h2>
+  
+    <button onclick="telechargerPDF()"><img src="telechargement_icone.png" alt="Logo téléchargement" style="max-width: 5%;"> Télécharger les résultats en PDF</button>
     <br>
-    <button onclick="telechargerPDF()">Télécharger les résultats en PDF</button>
+    <button onclick="ouvrirPopup('popup-methode')"><img src="texte_loupe_icone.png" alt="Logo loupe" style="max-width: 5%;"> Méthode de notation</button>
+    <br>
+    <button onclick="ouvrirPopup('popup-contexte')"><img src="interrogation_icone.png" alt="logo point d'interrogation" style="max-width: 5%;">Contexte</button>
+    </div>
   </div>
 </div>
+
+<div id="popup-methode" class="custom-popup" style="display:none;">
+  <div class="custom-popup-content">
+    <button class="close-popup" onclick="fermerPopup('popup-methode')">x</button>
+    <h2>Méthode de notation</h2>
+    <p>blabla<br></p>
+  </div>
+</div>
+<div id="popup-contexte" class="custom-popup" style="display:none;">
+  <div class="custom-popup-content">
+    <button class="close-popup" onclick="fermerPopup('popup-contexte')">x</button>
+    <h2>Contexte du questionnaire</h2>
+    <p>blabla<br></p>
+  </div>
+</div>
+
     <script src="script.js"></script>  
 </body>
 </html>

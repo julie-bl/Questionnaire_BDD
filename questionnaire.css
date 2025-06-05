@@ -222,7 +222,7 @@ button:hover, #back-button:hover {
   color: #fff;
   z-index: 10;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 5px;
   border: none;
   cursor: pointer;
   font-size: 1.2em;
@@ -349,5 +349,74 @@ button:hover, #back-button:hover {
     min-width: 0;
     text-align: right;
   }
+
+    .custom-popup-content {
+    width: 90vw;
+    max-width: 350px;
+    min-width: 0;
+    padding: 14px;
+    box-sizing: border-box; 
+  }
+  
 }
 
+.Options {
+    background-color: #f2f2f7; 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.Options button {
+    background-color: #ffffff; 
+    color: #333333;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Options button:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.Options button img {
+    margin-right: 10px;
+    height: auto;
+}
+
+.custom-popup {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+.custom-popup-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 700px;
+  width: 90vw;
+  position: relative;
+  box-shadow: 0 4px 24px #0003;
+}
+.close-popup {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}

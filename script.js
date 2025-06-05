@@ -9,33 +9,33 @@ const tabIds = ['onglet1', 'onglet2', 'onglet3', 'onglet4', 'onglet5']; // Liste
 //Commentaires de chaque question 
 const commentairesQuestions = {
   q1: {
-    "1": "Il existe une publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
-    "0.5": "Il n'existe pas encore de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
-    "0": "Il n'existe pas de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture."
+    "1": "1.  Il existe une publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
+    "0.5": "1.  Il n'existe pas encore de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture.",
+    "0": "1.  Il n'existe pas de publication définissant la base de données et/ou son protocole dans une revue à comité de lecture."
   },
   q1b: {
     "0.5": "Un document interne existe, c'est un bon début.",
     "0": "Aucun document accessible avec au minimum la population cible, les critères d'inclusion, les variables collectées, la modalité de collecte et le contrôle qualité n'est accessible.",
   },
   q2: {
-    "1": "La base est partageable avec d'autres utilisateurs que votre équipe.",
-    "0": "La base n'est pas partageable, cela limite son impact.",
+    "1": "2.  La base est partageable avec d'autres utilisateurs que votre équipe.",
+    "0": "2.  La base n'est pas partageable, cela limite son impact.",
   },
   q3: {
-    "1": "Il esxiste une procédure formalisée pour accéder à la base de données.",
-    "0": "Il n'esxiste aucune procédure formalisée pour accéder à la base de données.",
+    "1": "3.  Il esxiste une procédure formalisée pour accéder à la base de données.",
+    "0": "3.  Il n'esxiste aucune procédure formalisée pour accéder à la base de données.",
   },
   q4: {
-    "1": "Il existe une instance scientifique pour l'évaluation des projets portant sur la base de données",
-    "0": "Il n'existe aucune instance scientifique pour l'évaluation des projets portant sur la base de données",
+    "1": "4.  Il existe une instance scientifique pour l'évaluation des projets portant sur la base de données",
+    "0": "4.  Il n'existe aucune instance scientifique pour l'évaluation des projets portant sur la base de données",
   },
   q5: {
-    "1": "Une équipe est disponible pour accompagner l'utilisabilité des données.",
-    "0": "Acune équipe n'est disponible pour accompagner l'utilisabilité des données.",
+    "1": "5.  Une équipe est disponible pour accompagner l'utilisabilité des données.",
+    "0": "5.  Acune équipe n'est disponible pour accompagner l'utilisabilité des données.",
   },
   q6: {
-    "1": "Il existe un dictionnaire des variables",
-    "0": "Il n'existe aucun dictionnaire des variables.",
+    "1": "6.  Il existe un dictionnaire des variables",
+    "0": "6.  Il n'existe aucun dictionnaire des variables.",
   },
   q6b: {
     "1": "Les modifications au cours du temps des variables de ce dictionnaire sont intégrées ",
@@ -43,96 +43,96 @@ const commentairesQuestions = {
     "na": "Non applicable car il s'agit d'une étude transversale."
   },
   q7: {
-    "1": "Il existe une formation du personnel de collecte.",
-    "0": "Il n'existe aucune formation du personnel de collecte.",
-    "na": "Non applicable pour cette question."
+    "1": "1.  Il existe une formation du personnel de collecte.",
+    "0": "1.  Il n'existe aucune formation du personnel de collecte.",
+    "na": "1.  Non applicable pour cette question."
   },
   q8: {
-    "1": "Il existe un protocole formalisé pour standardiser la collecte.",
-    "0": "Il n'existe aucun protocole formalisé pour standardiser la collecte.",
+    "1": "2.  Il existe un protocole formalisé pour standardiser la collecte.",
+    "0": "2.  Il n'existe aucun protocole formalisé pour standardiser la collecte.",
   },
   q9: {
-    "1": "Il existe des contrôles de cohérence à la collecte.",
-    "0": "Il n'existe pas de contrôles de cohérence à la collecte.",
+    "1": "3.  Il existe des contrôles de cohérence à la collecte.",
+    "0": "3  Il n'existe pas de contrôles de cohérence à la collecte.",
   },
   q10: {
-    "1": "Il existe des audits de qualité internes.",
-    "0": "Il n'existe pas d'audits de qualité internes.",
+    "1": "4.  Il existe des audits de qualité internes.",
+    "0": "4.  Il n'existe pas d'audits de qualité internes.",
   },
   q11: {
-    "1": "Il existe des audits de qualité externes.",
-    "0": "Il n'existe pas d'audits de qualité externes.",
+    "1": "5.  Il existe des audits de qualité externes.",
+    "0": "5.  Il n'existe pas d'audits de qualité externes.",
   },
   q12: {
-    "1": "Des classifications standardisées sont utilisées.",
-    "0": "Aucunes classifications standardisées ne sont utilisées..",
-    "na": "Non applicable pour cette question."
+    "1": "6.  Des classifications standardisées sont utilisées.",
+    "0": "6.  Aucunes classifications standardisées ne sont utilisées..",
+    "na":"6.  Non applicable pour cette question."
   },
   q13: {
-    "1": "Les instruments de mesure sont régulièrement standardisés, calibrés, vérifiés.",
-    "0": "Les instruments de mesure ne sont pas régulièrement standardisés, calibrés, vérifiés.",
-    "na": "Non applicable pour cette question."
+    "1": "7.  Les instruments de mesure sont régulièrement standardisés, calibrés, vérifiés.",
+    "0": "7.  Les instruments de mesure ne sont pas régulièrement standardisés, calibrés, vérifiés.",
+    "na": "7.  Non applicable pour cette question."
   },
   q14: {
-    "1": "Pour les collections biologiques, il existe des consignes de traitement et de stockage des échantillons.",
-    "0": "Pour les collections biologiques, il n'existe pas de consignes de traitement et de stockage des échantillons.",
-    "na": "Non applicable pour cette question."
+    "1": "8.  Pour les collections biologiques, il existe des consignes de traitement et de stockage des échantillons.",
+    "0": "8.  Pour les collections biologiques, il n'existe pas de consignes de traitement et de stockage des échantillons.",
+    "na": "8.  Non applicable pour cette question."
   },
   q15: {
-    "1": "Pour l'imgagerie, il existe des consignes de réalisation des clichés.",
-    "0": "Pour l'imgagerie, il n'existe aucunes consignes de réalisation des clichés.",
-    "na": "Non applicable pour cette question."
+    "1": "9.  Pour l'imgagerie, il existe des consignes de réalisation des clichés.",
+    "0": "9.  Pour l'imgagerie, il n'existe aucunes consignes de réalisation des clichés.",
+    "na": "9.  Non applicable pour cette question."
   },
   q16: {
-    "1": "Il existe un cahier des charges de data management décrivant le processus de mise en qualité des données.",
-    "0": "Il n'existe aucun cahier des charges de data management décrivant le processus de mise en qualité des données.",
+    "1": "1.  Il existe un cahier des charges de data management décrivant le processus de mise en qualité des données.",
+    "0": "1.  Il n'existe aucun cahier des charges de data management décrivant le processus de mise en qualité des données.",
   },
   q17: {
-    "1": "Les modifications apportées aux données après la collecte sont traçables.",
-    "0": "Les modifications apportées aux données après la collecte ne sont pas traçables.",
+    "1": "2.  Les modifications apportées aux données après la collecte sont traçables.",
+    "0": "2.  Les modifications apportées aux données après la collecte ne sont pas traçables.",
   },
   q18: {
-    "1": "Il est possible d'accéder à la fois aux données brutes et aux données travaillées.",
-    "0": "Il est impossible d'accéder à la fois aux données brutes et aux données travaillées.",
-    "na": "Non applicable pour cette question."
+    "1": "3.  Il est possible d'accéder à la fois aux données brutes et aux données travaillées.",
+    "0": "3.  Il est impossible d'accéder à la fois aux données brutes et aux données travaillées.",
+    "na": "3.  Non applicable pour cette question."
   },
    q19: {
-    "1": "Il existe des indicateurs de qualité régulièrement calculés à partir des données collectées.",
-    "0": "Il n'y a pas d'indicateurs de qualité régulièrement calculés à partir des données collectées.",
+    "1": "4.  Il existe des indicateurs de qualité régulièrement calculés à partir des données collectées.",
+    "0": "4.  Il n'y a pas d'indicateurs de qualité régulièrement calculés à partir des données collectées.",
   },
    q20: {
-    "1": "La base de données est engagée dans un processus nominatif.",
-    "O.5": "La base de données est en cours d'engagement dans un processus nominatif.",
-    "0": "La base de données n'est pas engagée dans un processus nominatif.",
+    "1": "1.  La base de données est engagée dans un processus nominatif.",
+    "O.5": "1.  La base de données est en cours d'engagement dans un processus nominatif.",
+    "0": "1.  La base de données n'est pas engagée dans un processus nominatif.",
   },
    q21: {
-    "1": "Le régime juridique de la base de données décalrée à la CNIL est un entrepôt de données.",
-    "0.75": "Le régime juridique de la base de données décalrée à la CNIL est une demande changement de statut d'étude à celui d'entrepôt.",
-    "0.5": "Le régime juridique de la base de données décalrée à la CNIL est une recherche, une étude ou une évaluation ponctuelle."
+    "1": "2.  Le régime juridique de la base de données décalrée à la CNIL est un entrepôt de données.",
+    "0.75": "2.  Le régime juridique de la base de données décalrée à la CNIL est une demande changement de statut d'étude à celui d'entrepôt.",
+    "0.5": "2.  Le régime juridique de la base de données décalrée à la CNIL est une recherche, une étude ou une évaluation ponctuelle."
   },
    q22: {
-    "1": "L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données'.",
-    "0": "L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données.",
+    "1": "3.  L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données'.",
+    "0": "3.  L'information à l'inclusion des sujets prévoit la réutilisation secondaire de leurs données.",
   },
    q22b: {
     "1": "Les canaux des patients sont fonctionnels.",
     "0": "Les canaux des patients ne sont pas fonctionnels (ou réponse non à la question précédente).",
   },
    q23: {
-    "1": "La base de données a fait l'objet d'une évaluation par un organisme indépendant.",
-    "0": "La base de données n'a pas fait l'objet d'une évaluation par un organisme indépendant.",
+    "1": "1.  La base de données a fait l'objet d'une évaluation par un organisme indépendant.",
+    "0": "1.  La base de données n'a pas fait l'objet d'une évaluation par un organisme indépendant.",
   },
    q24: {
-    "1": "La liste des projets initiés à partir de la base est publiquement accessible.",
-    "0": "La liste des projets initiés à partir de la base n'est pas publiquement accessible.",
+    "1": "2. La liste des projets initiés à partir de la base est publiquement accessible.",
+    "0": "2.  La liste des projets initiés à partir de la base n'est pas publiquement accessible.",
   },
    q25: {
-    "1": "La liste des publications scientifiques issues de la base avec les principaux résultats est publiquement accessible.",
-    "0": "La liste des publications scientifiques issues de la base avec les principaux résultats n'est pas publiquement accessible.",
+    "1": "3.  La liste des publications scientifiques issues de la base avec les principaux résultats est publiquement accessible.",
+    "0": "3.  La liste des publications scientifiques issues de la base avec les principaux résultats n'est pas publiquement accessible.",
   },
    q26: {
-    "1": "Il existe une communauté structurée d'utilisateurs de la base de données.",
-    "0": "Il n'existe aucune communauté structurée d'utilisateurs de la base de données.",
+    "1": "4.  Il existe une communauté structurée d'utilisateurs de la base de données.",
+    "0": "4.  Il n'existe aucune communauté structurée d'utilisateurs de la base de données.",
   }
 
 }
@@ -332,7 +332,7 @@ const currentTabElement = document.getElementById(currentTabId);
       scoreDot.style.background = '#cccccc';
   }
 
-// ...après avoir mis à jour scoreTotalText et scoreDot...
+  //Création des commentaires basiques comme sur yuka
 const scoreGlobalComment = document.getElementById('score-global-comment');
 let commentaireYuka = "";
 const matchScore = scoreTotalText.match(/(\d+)\s*\/\s*100/);
@@ -456,25 +456,41 @@ return `
 `;
   });
   
+  
   document.getElementById('scores-categories').innerHTML = categories.join('');
 
-  // Ajoute l'interactivité pour la flèche
-  document.querySelectorAll('.detail-toggle').forEach(row => {
-    row.addEventListener('click', function() {
-        const detail = this.nextElementSibling;
-        const arrow = this.querySelector('.detail-arrow');
-if (detail.style.display === 'none') {
-    detail.style.display = 'block';
-    arrow.outerHTML = arrowChevronDown;
-    this.classList.add('no-border');
-    detail.classList.add('with-border');
-} else {
-    detail.style.display = 'none';
-    arrow.outerHTML = arrowChevronRight;
-    this.classList.remove('no-border');
-    detail.classList.remove('with-border');
-}
-    });
+  // Ajoute l'interactivité pour la flèche (chavron pour ouvrir et fermer le détail)
+document.querySelectorAll('.detail-toggle').forEach((row, idx, arr)=> {
+  row.addEventListener('click', function() {
+    const detail = this.nextElementSibling;
+    const arrow = this.querySelector('.detail-arrow');
+    const modalContent = document.querySelector('#modal-resultats .modal-content');
+    if (detail.style.display === 'none') {
+      detail.style.display = 'block';
+      arrow.outerHTML = arrowChevronRight;
+      this.classList.add('no-border');
+      detail.classList.add('with-border');
+      // --- scroll automatique du bloc détaillé en haut de la modale ---
+      const modalContent = document.querySelector('#modal-resultats .modal-content');
+      if (modalContent) {
+        const rect = this.getBoundingClientRect();
+        const modalRect = modalContent.getBoundingClientRect();
+        modalContent.scrollTop += rect.top - modalRect.top -8 ;
+      }
+    } else {
+      detail.style.display = 'none';
+      arrow.outerHTML = arrowChevronDown;
+      this.classList.remove('no-border');
+      detail.classList.remove('with-border');
+      // Scroll sur le header de la catégorie précédente si elle existe
+      if (modalContent && idx > 0) {
+        const prevHeader = arr[idx - 1];
+        const prevRect = prevHeader.getBoundingClientRect();
+        const modalRect = modalContent.getBoundingClientRect();
+        modalContent.scrollTop += prevRect.top - modalRect.top - 8;
+      }
+    }
+  });
 });
 
   // Affiche la modale
@@ -790,4 +806,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function ouvrirPopup(id) {
+  document.getElementById(id).style.display = 'flex';
+}
+function fermerPopup(id) {
+  document.getElementById(id).style.display = 'none';
+}
+// Fermer le popup si clic en dehors du contenu
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('.custom-popup').forEach(popup => {
+    if (popup.style.display === 'flex' && !popup.querySelector('.custom-popup-content').contains(e.target) && !e.target.matches('button[onclick^="ouvrirPopup"]')) {
+      popup.style.display = 'none';
+    }
+  });
 });
