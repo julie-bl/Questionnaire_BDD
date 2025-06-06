@@ -348,116 +348,151 @@ if (matchScore) {
 }
 if (scoreGlobalComment) scoreGlobalComment.textContent = commentaireYuka;
 
-
-  // Génère la liste des catégories avec détail déroulant
-  const scoresOngletsHTML = calculerdetail();
-  //Cette ligne transforme une grande chaîne HTML en un tableau (ilter(item => item.trim() !== '') := enlever les éléments vides du tableau )
-  const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
- // Icones des catégories
-  const icons = [
+// Génère la liste des catégories avec détail déroulant
+const scoresOngletsHTML = calculerdetail();
+const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
+// Icones des catégories
+const icons = [
   '<img src="database_icon.png" alt="Structuration" class="categorie-icon-img">',
   '<img src="quality_icon.png" alt="Qualité" class="categorie-icon-img">',
   '<img src="magnifying_glass_icon.png" alt="Traçabilité" class="categorie-icon-img">',
   '<img src="balance_icon.png" alt="Réglementations" class="categorie-icon-img">',
   '<img src="group_discussion_icon.png" alt="Évaluation externe" class="categorie-icon-img">'
 ];
-  const categories = categoriesData.map((item, idx) => {
-      const strongRegex = /<strong>(.*?)<\/strong>/;
-      const scoreRegex = /: (\d+)\/100/;
-      const titleMatch = item.match(strongRegex);
-      const scoreMatch = item.match(scoreRegex);
-      let titre = titleMatch ? titleMatch[1].trim() : '';
-      let note = scoreMatch ? scoreMatch[1].trim() : '';
-      let color = pointCouleur(note);
-      
-      // Détail des questions pour cette catégorie
-      const onglet = document.getElementsByClassName('tab-content')[idx];
-      const questions = Array.from(onglet.querySelectorAll('p')).map((p, qIdx) => {
+
+// On prépare deux tableaux : défauts et qualités
+const defauts = [];
+const qualites = [];
+
+categoriesData.forEach((item, idx) => {
+  const strongRegex = /<strong>(.*?)<\/strong>/;
+  const scoreRegex = /: (\d+)\/100/;
+  const titleMatch = item.match(strongRegex);
+  const scoreMatch = item.match(scoreRegex);
+  let titre = titleMatch ? titleMatch[1].trim() : '';
+  let note = scoreMatch ? scoreMatch[1].trim() : '';
+  let color = pointCouleur(note);
+
+  // Détail des questions pour cette catégorie
+  const onglet = document.getElementsByClassName('tab-content')[idx];
+  const questions = Array.from(onglet.querySelectorAll('p')).map((p, qIdx) => {
     // Cherche les radios juste après le <p>
     const radios = [];
-   let el = p.nextElementSibling;
-while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === 'DIV' && el.classList.contains('radio-group')))) {
-    if (el.tagName === 'LABEL') {
+    let el = p.nextElementSibling;
+    while (el && (el.tagName === 'LABEL' || el.tagName === 'BR' || (el.tagName === 'DIV' && el.classList.contains('radio-group')))) {
+      if (el.tagName === 'LABEL') {
         radios.push(el.querySelector('input[type="radio"]'));
-    } else if (el.tagName === 'DIV' && el.classList.contains('radio-group')) {
+      } else if (el.tagName === 'DIV' && el.classList.contains('radio-group')) {
         el.querySelectorAll('input[type="radio"]').forEach(radio => radios.push(radio));
+      }
+      el = el.nextElementSibling;
     }
-    // Passe à l'élément suivant
-    el = el.nextElementSibling;
-}
-    // Si aucun radio, on ignore ce <p>
     if (radios.length === 0) return '';
-    // Trouve la radio cochée
     const checked = radios.find(r => r && r.checked);
     let pastille = '#cccccc', commentaire = '';
     let questionName = '';
-  // Trouve le nom de la question (attribut name du radio)
-  if (radios[0]) questionName = radios[0].name;
+    if (radios[0]) questionName = radios[0].name;
 
-  if (checked) {
-    const score = checked.getAttribute('data-score');
-    // Utilise le mapping si disponible, sinon commentaire générique
-    if (commentairesQuestions[questionName] && commentairesQuestions[questionName][score] !== undefined) {
-      commentaire = commentairesQuestions[questionName][score];
+    if (checked) {
+      const score = checked.getAttribute('data-score');
+      if (commentairesQuestions[questionName] && commentairesQuestions[questionName][score] !== undefined) {
+        commentaire = commentairesQuestions[questionName][score];
+      } else {
+        if (score === "1") commentaire = "Critère rempli.";
+        else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli.";
+        else if (score === "0") commentaire = "Critère non rempli.";
+        else if (score === "na") commentaire = "Non applicable.";
+        else commentaire = "Réponse inattendue.";
+      }
+      if (score === "1") pastille = '#00d600';
+      else if (score === "0.75" || score === "0.5") pastille = '#c9f70f';
+      else if (score === "0") pastille = '#f23311';
+      else if (score === "na") pastille = '#cccccc';
     } else {
-      // Commentaires générique
-      if (score === "1") commentaire = "Critère rempli.";
-      else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli.";
-      else if (score === "0") commentaire = "Critère non rempli.";
-      else if (score === "na") commentaire = "Non applicable.";
-      else commentaire = "Réponse inattendue.";
+      pastille = '#cccccc';
+      commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
     }
-    // Couleur pastille 
-    if (score === "1") pastille = '#00d600';
-    else if (score === "0.75" || score === "0.5") pastille = '#c9f70f';
-    else if (score === "0") pastille = '#f23311';
-    else if (score === "na") pastille = '#cccccc';
-  } else {
-    pastille = '#cccccc';
-    commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
-  }
-  return `
-    <div class="detail-question-row">
-      <span class="detail-question-comment">${commentaire}</span>
-      <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
-    </div>
-    <br>
-  `;
-}).join('');
+    return `
+      <div class="detail-question-row">
+        <span class="detail-question-comment">${commentaire}</span>
+        <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
+      </div>
+      <br>
+    `;
+  }).join('');
 
-
-      // Jauge de score
-    const percent = Math.max(0, Math.min(100, parseInt(note) || 0));
-return `
-  <div class="categorie-score-row detail-toggle" data-idx="${idx}">
-    <div class="categorie-score-header">
-      ${arrowChevronRight}
-      <span class="categorie-icon" style="margin-right:10px;">${icons[idx] || ""}</span>
-      <span class="categorie-score-title">${titre}</span>
-    </div>
-    <div class="categorie-score-values">
-      <span class="categorie-score-value">${note}/100</span>
-      <span class="score-dot" style="background:${color};"></span>
-    </div>
-  </div>
-  <div class="categorie-detail-content" style="display:none;">
-    <br><br>
-    <div class="jauge-bar-container">
-      <div class="jauge-bar-bg"></div>
-      <div class="jauge-bar-indicator" style="left:calc(${percent}%);"></div>
-      <div style="display:flex; justify-content:space-between; width:100%; font-size:0.95em; color:#666; margin-top:0px;">
-        <span>0</span>
-        <span>100</span>
+  // Jauge de score
+  const percent = Math.max(0, Math.min(100, parseInt(note) || 0));
+  const bloc = `
+    <div class="categorie-score-row detail-toggle" data-idx="${idx}">
+      <div class="categorie-score-header">
+        ${arrowChevronRight}
+        <span class="categorie-icon" style="margin-right:10px;">${icons[idx] || ""}</span>
+        <span class="categorie-score-title">${titre}</span>
+      </div>
+      <div class="categorie-score-values">
+        <span class="categorie-score-value">${note}/100</span>
+        <span class="score-dot" style="background:${color};"></span>
       </div>
     </div>
-    <br><br>
-    <div class="detail-questions-list">${questions}</div>
-  </div>
-`;
-  });
-  
-  
-  document.getElementById('scores-categories').innerHTML = categories.join('');
+    <div class="categorie-detail-content" style="display:none;">
+      <br><br>
+      <div class="jauge-bar-container">
+        <div class="jauge-bar-bg"></div>
+        <div class="jauge-bar-indicator" style="left:calc(${percent}%);"></div>
+        <div style="display:flex; justify-content:space-between; width:100%; font-size:0.95em; color:#666; margin-top:0px;">
+          <span>0</span>
+          <span>100</span>
+        </div>
+      </div>
+      <br><br>
+      <div class="detail-questions-list">${questions}</div>
+    </div>
+  `;
+
+  // Classement dans défauts ou qualités
+  if (parseInt(note) <= 40) {
+    defauts.push({ note: parseInt(note), bloc });
+  } else {
+    qualites.push({ note: parseInt(note), bloc });
+  }
+});
+
+// Trie du plus mauvais au meilleur dans chaque groupe
+defauts.sort((a, b) => a.note - b.note);
+qualites.sort((a, b) => a.note - b.note);
+
+// Génération du HTML final
+let categoriesHTML = '';
+const scoreTotalInt = parseInt(scoreTotalText)
+if (scoreTotalInt <= 40 ){
+if (defauts.length) {
+  categoriesHTML += `<h3 >Défauts</h3>`;
+  categoriesHTML += defauts.map(d => d.bloc).join('');
+  //categoriesHTML += `<p id="vide"></p>`;
+}
+if (qualites.length) {
+  categoriesHTML += `<h3><br>Qualités</h3>`;
+  categoriesHTML += qualites.map(q => q.bloc).join('');
+  categoriesHTML += `<br><br>`;
+
+}
+}
+else {
+if (qualites.length) {
+  categoriesHTML += `<h3>Qualités</h3>`;
+  categoriesHTML += qualites.map(q => q.bloc).join('');
+}
+if (defauts.length) {
+  categoriesHTML += `<h3 ><br>Défauts</h3>`;
+  categoriesHTML += defauts.map(d => d.bloc).join('');
+  categoriesHTML += `<br><br>`;
+}
+}
+
+
+
+document.getElementById('scores-categories').innerHTML = categoriesHTML;
 
   // Ajoute l'interactivité pour la flèche (chavron pour ouvrir et fermer le détail)
 document.querySelectorAll('.detail-toggle').forEach((row, idx, arr)=> {
@@ -735,59 +770,58 @@ function telechargerPDF() {
     doc.text('Détail des scores', marginX, positionY);
     positionY += 10;
 
-    // Récupération et formatage des scores
-    const scoresOngletsHTML = calculerdetail();
-    const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
-    const tableRows = categoriesData.map(item => {
-        const title = (item.match(/<strong>(.*?)<\/strong>/) || [])[1] || 'N/A';
-        const score = (item.match(/: (\d+)\s*\/\s*100/) || [])[1] || 'N/A';
-        let commentaire = (item.match(/: \d+\s*\/\s*100<br><br>(.*)/s) || [])[1] || '';
-        commentaire = commentaire.replace(/<br>/g, '').trim();
-        return [title, score + ' /100', commentaire];
-    });
+// Récupération et formatage des scores
+const scoresOngletsHTML = calculerdetail();
+const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
+const tableRows = categoriesData.map(item => {
+    const title = (item.match(/<strong>(.*?)<\/strong>/) || [])[1] || 'N/A';
+    const score = (item.match(/: (\d+)\s*\/\s*100/) || [])[1] || 'N/A';
+    return [title, score + ' /100'];
+});
 
-    // Score global
-    const globalScore = (document.getElementById('score-total').innerText.match(/: (\d+)\s*\/\s*100/) || [])[1] || 'N/A';
-    const getScoreColor = score => {
-        const n = parseFloat(score.replace('/100', '').replace(',', '.'));
-        if (isNaN(n)) return [212, 212, 212];
-        if (n <= 20 ) return [242, 51, 17];
-        if (n <= 40 ) return [255, 168, 28];
-        if (n <= 60 ) return [201, 247, 15];
-        if (n <= 80 ) return [0, 214, 0];
-        return [12, 156, 12];
-    };
-    tableRows.push([
-        { content: 'Note globale', styles: { fillColor: [212, 212, 212] } },
-        { content: globalScore, colSpan: 2, styles: { fillColor: getScoreColor(globalScore), halign: 'center', fontStyle:'bold' }}
-    ]);
+// Score global
+const globalScore = (document.getElementById('score-total').innerText.match(/(\d+)\s*\/\s*100/) || [])[1] || 'N/A';
+const getScoreColor = score => {
+    const n = parseFloat(score.replace('/100', '').replace(',', '.'));
+    if (isNaN(n)) return [212, 212, 212];
+    if (n <= 20 ) return [242, 51, 17];
+    if (n <= 40 ) return [255, 168, 28];
+    if (n <= 60 ) return [201, 247, 15];
+    if (n <= 80 ) return [0, 214, 0];
+    return [12, 156, 12];
+};
+// Ligne note globale
+tableRows.push([
+    { content: 'Note globale', styles: { fillColor: [212, 212, 212] } },
+    { content: globalScore, styles: { fillColor: getScoreColor(globalScore), halign: 'center', fontStyle:'bold' } }
+]);
 
-    doc.autoTable({
-        startY: positionY,
-        head: [['Critère', 'Note', 'Commentaire']],
-        body: tableRows,
-        theme: 'grid',
-        tableWidth: contentWidth,
-        styles: { font: 'Helvetica', fontSize: 9, cellPadding: 3, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.1 },
-        headStyles: { fillColor: [212, 212, 212], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 10, lineColor: [0, 0, 0] },
-        columnStyles: { 0: { cellWidth: contentWidth * 0.35 }, 1: { cellWidth: contentWidth * 0.15, halign: 'center' }, 2: { cellWidth: contentWidth * 0.50 } },
-        didParseCell: function(data) {
-            if (data.column.index === 1 && data.cell.section === 'body') {
-                data.cell.styles.halign = 'center';
-            }
-            if (data.column.index === 0 && data.cell.section === 'body') {
-                data.cell.styles.fillColor = [230, 230, 230];
-            }
-            if (
-                data.row.index === data.table.body.length - 1 &&
-                data.cell.section === 'body' &&
-                data.column.index !== 1
-            ) {
-                data.cell.styles.fillColor = [212, 212, 212];
-            }
+doc.autoTable({
+    startY: positionY,
+    head: [['Catégorie', 'Note']],
+    body: tableRows,
+    theme: 'grid',
+    tableWidth: contentWidth,
+    styles: { font: 'Helvetica', fontSize: 11, cellPadding: 3, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.1,halign :'center' },
+    headStyles: { fillColor: [212, 212, 212], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 12, lineColor: [0, 0, 0] },
+    columnStyles: { 0: { cellWidth: contentWidth * 0.65 }, 1: { cellWidth: contentWidth * 0.35, halign: 'center' } },
+    didParseCell: function(data) {
+        if (data.column.index === 1 && data.cell.section === 'body') {
+            data.cell.styles.halign = 'center';
         }
-    });
-
+        if (data.column.index === 0 && data.cell.section === 'body') {
+            data.cell.styles.fillColor = [230, 230, 230];
+        }
+        // Note globale : couleur grise sur la 1ère colonne
+        if (
+            data.row.index === data.table.body.length - 1 &&
+            data.cell.section === 'body' &&
+            data.column.index === 0
+        ) {
+            data.cell.styles.fillColor = [212, 212, 212];
+        }
+    }
+});
     //Enregistrement du PDF
     doc.save('rapport_scores_qualite.pdf');
 }

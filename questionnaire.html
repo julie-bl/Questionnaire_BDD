@@ -76,7 +76,6 @@
         <br>   
     <button class="nav-button" onclick="passerOnglet()">Suivant</button> 
 </div>
-
     <!--Deuxième partie-->
     <div class="tab-content" id="onglet2" style="display: none;" data_max="9">
 
@@ -255,6 +254,7 @@
   </div>
 </div>
 
+<!-- Pop-up de la méthode de notation du questionnaire -->
 <div id="popup-methode" class="custom-popup" style="display:none;">
   <div class="custom-popup-content">
     <button class="close-popup" onclick="fermerPopup('popup-methode')">x</button>
@@ -262,11 +262,26 @@
     <p>blabla<br></p>
   </div>
 </div>
+<!-- Pop-up du contexte du questionnaire -->
 <div id="popup-contexte" class="custom-popup" style="display:none;">
   <div class="custom-popup-content">
     <button class="close-popup" onclick="fermerPopup('popup-contexte')">x</button>
+    
     <h2>Contexte du questionnaire</h2>
-    <p>blabla<br></p>
+
+    <p id="p1">La qualité des données est essentielle pour la recherche et l’innovation en santé et incontournable
+pour leur partage. Sous l’impulsion du Ministère de l'Enseignement Supérieur, de la Recherche et de
+l'Innovation (MESRI), un groupe de travail(*) s’est mobilisé pour proposer un outil d’auto-évaluation
+pour les responsables de base de données en santé. L’objectif est d’identifier les points forts et faibles
+de la gestion de la qualité et du partage. Cet outil n’a pas vocation à interclasser des bases de données.
+Il doit être utilisé dans cette version sans y apporter de modifications.<br><br></p>
+
+<p id="p2">(*) Romain Casey (OFSEP, Épidémiologiste), Marie Zins et Marcel Goldberg (INSERM, Épidémiologistes, cohorte
+Constances), Yohann Foucher (MESRI, Chargé de mission), Christophe Bonaldi (Santé Publique France,
+Statisticien), Emmanuel Bacry (Health Data Hub, Directeur scientifique), Emilie Lanoy (Institut Gustave Roussy,
+Statisticienne), Paulo Carita (Sanofi, Économie de la santé), Laurie Levy-Bachelot (MSD, Directrice des études en
+vie réelle), Philippe-Jean Bousquet (INCA, Directeur de la Direction Observation, Science des données,
+Évaluation).</p>
   </div>
 </div>
 

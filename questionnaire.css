@@ -23,7 +23,10 @@ h1, h2, title {
   text-align: center;
   font-size: 1.01em;
 }
-
+#p2 {
+  text-align: center;
+  font-size: 0.65em;
+}
 /* Onglets */
 .tabs {
   display: flex;
@@ -163,19 +166,22 @@ button:hover, #back-button:hover {
 }
 
 #scores-categories {
-  border-top:solid 1px #4b237b;
+  /*border-top:solid 1px #4b237b;*/
   width: 100%;
   padding-top: 15px;
   margin-top: 20px;
 }
 
 /* Catégorie score */
+#vide{
+  border-top: 1px solid #4b237b;
+}
 .categorie-score-row {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
   font-size: 1.1em;
-  border-bottom: 1px solid #4b237b;
+  border-top: 1px solid #4b237b;
   padding: 20px;
   justify-content: space-between;
 }
@@ -310,6 +316,8 @@ button:hover, #back-button:hover {
 .detail-questions-list {
   width: 100%;
 }
+
+
 
 /* Responsive pour mobile et tablette */
 @media (max-width: 800px) {
