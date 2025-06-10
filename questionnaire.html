@@ -231,9 +231,10 @@
 <!-- Modale résultats -->
 <div id="modal-resultats">
   <div class="modal-content">
-    <button onclick="fermerModalResultats()" class="close-modal">x</button>
-
-    <h1 id="h2_gauche">Score qualité</h1>
+    <div class="modal-header-flex">
+  <h1 id="h2_gauche">Score qualité</h1>
+  <button onclick="fermerModalResultats()" class="close-modal">x</button>
+    </div>
     <br>
     <div class="score-global">
       <span id="score-total"></span>
@@ -243,7 +244,8 @@
         
     <div id="scores-categories"></div>
     <div class="Options">
-    <h2 id="h2_gauche">Options</h2>
+    <h3 id="h2_gauche">Options</h3>
+    <br>
   
     <button onclick="telechargerPDF()"><img src="telechargement_icone.png" alt="Logo téléchargement" style="max-width: 5%;"> Télécharger les résultats en PDF</button>
     <br>
@@ -258,6 +260,7 @@
 <div id="popup-methode" class="custom-popup" style="display:none;">
   <div class="custom-popup-content">
     <button class="close-popup" onclick="fermerPopup('popup-methode')">x</button>
+    <br>
     <h2>Méthode de notation</h2>
     <p>blabla<br></p>
   </div>
@@ -266,7 +269,7 @@
 <div id="popup-contexte" class="custom-popup" style="display:none;">
   <div class="custom-popup-content">
     <button class="close-popup" onclick="fermerPopup('popup-contexte')">x</button>
-    
+    <br>
     <h2>Contexte du questionnaire</h2>
 
     <p id="p1">La qualité des données est essentielle pour la recherche et l’innovation en santé et incontournable
