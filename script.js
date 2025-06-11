@@ -1,10 +1,8 @@
-// Variable globale pour suivre l'onglet actuellement affiché
-let currentTab = 0; // Index de l'onglet actif (0 pour le premier, 1 pour le deuxième, etc.)
-const tabIds = ['onglet1', 'onglet2', 'onglet3', 'onglet4', 'onglet5']; // Liste des IDs d'onglet de questions (onglet6 "Résultats" est supprimé de la navigation)
+// Index de l'onglet actif (0 pour le premier, 1 pour le deuxième, etc.)
+let currentTab = 0; 
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Liste des IDs d'onglet de questions 
+const tabIds = ['onglet1', 'onglet2', 'onglet3', 'onglet4', 'onglet5']; 
 
 //Commentaires de chaque question 
 const commentairesQuestions = {
@@ -16,7 +14,8 @@ const commentairesQuestions = {
   q1b: {
     "0.5": "Un document interne existe, c'est un bon début.",
     "0": "Aucun document accessible avec au minimum la population cible, les critères d'inclusion, les variables collectées, la modalité de collecte et le contrôle qualité n'est accessible.",
-  },
+    "na": "Vous avez répondu Oui ou En cours à la réponse précédente",
+},
   q2: {
     "1": "2.  La base est partageable avec d'autres utilisateurs que votre équipe.",
     "0": "2.  La base n'est pas partageable, cela limite son impact.",
@@ -177,6 +176,9 @@ function voirOngletSpe(id) {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Fonction pour vérifier si toutes les questions visibles d'un onglet sont répondues
 function VerifRep(tabElement) {
     const radioGroups = {};
@@ -233,6 +235,9 @@ function passerOnglet() {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Initialise l'affichage au chargement de la page pour montrer le premier onglet
 document.addEventListener('DOMContentLoaded', () => {
   voirOnglet(tabIds[0]); // Affiche le premier onglet (onglet1) au chargement de la page
@@ -254,11 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (radio.value === 'non') {
         q1bContainer.style.display = '';
       } else {
-        q1bContainer.style.display = 'none';
-        // Décocher q1b si caché
-        const q1bRadios = onglet1.querySelectorAll('input[name="q1b"]');
-        q1bRadios.forEach(rb => rb.checked = false);
-      }
+      q1bContainer.style.display = 'none';
+      // Décocher q1b si caché et cocher "na"
+      const q1bRadios = onglet1.querySelectorAll('input[name="q1b"]');
+      q1bRadios.forEach(rb => {
+        rb.checked = (rb.value === 'na');
+      });
+    }
     });
   });
 
@@ -303,6 +310,18 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Fonction qui attribue une image en fonction du score d'une question
+function getImageForScore(score) {
+  if (score === "1") return "Images/bien.png";
+  if (score === "0.75" || score === "0.5") return "Images/moyen.png";
+  if (score === "0") return "Images/mauvais.png";
+  if (score === "na") return "Images/na.png";
+  return "Images/vide.png";
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Fonction qui affiche les résultats
 function voirResultats() {
@@ -314,7 +333,7 @@ const arrowChevronDown = `<svg class="detail-arrow" width="24" height="24" viewB
 const currentTabId = tabIds[currentTab];
 const currentTabElement = document.getElementById(currentTabId);
 
-  // Vérifiez si toutes les questions du DERNIER onglet sont répondues
+  // Vérifiez si toutes les questions du dernier onglet sont répondues
   if (!VerifRep(currentTabElement)) {
       alert("Veuillez répondre à toutes les questions avant de voir les résultats.");
       return;
@@ -351,13 +370,14 @@ if (scoreGlobalComment) scoreGlobalComment.textContent = commentaireYuka;
 // Génère la liste des catégories avec détail déroulant
 const scoresOngletsHTML = calculerdetail();
 const categoriesData = scoresOngletsHTML.split('<br><br><br>').filter(item => item.trim() !== '');
+
 // Icones des catégories
 const icons = [
-  '<img src="database_icon.png" alt="Structuration" class="categorie-icon-img">',
-  '<img src="quality_icon.png" alt="Qualité" class="categorie-icon-img">',
-  '<img src="magnifying_glass_icon.png" alt="Traçabilité" class="categorie-icon-img">',
-  '<img src="balance_icon.png" alt="Réglementations" class="categorie-icon-img">',
-  '<img src="group_discussion_icon.png" alt="Évaluation externe" class="categorie-icon-img">'
+  '<img src="Images/database_icon.png" alt="Structuration" class="categorie-icon-img">',
+  '<img src="Images/quality_icon.png" alt="Qualité" class="categorie-icon-img">',
+  '<img src="Images/magnifying_glass_icon.png" alt="Traçabilité" class="categorie-icon-img">',
+  '<img src="Images/balance_icon.png" alt="Réglementations" class="categorie-icon-img">',
+  '<img src="Images/group_discussion_icon.png" alt="Évaluation externe" class="categorie-icon-img">'
 ];
 
 // On prépare deux tableaux : défauts et qualités
@@ -397,13 +417,16 @@ categoriesData.forEach((item, idx) => {
       const score = checked.getAttribute('data-score');
       if (commentairesQuestions[questionName] && commentairesQuestions[questionName][score] !== undefined) {
         commentaire = commentairesQuestions[questionName][score];
+
+     //Si les commentaires ne sont pas trouvés, on utilises des commentaires de base 
       } else {
-        if (score === "1") commentaire = "Critère rempli.";
-        else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli.";
-        else if (score === "0") commentaire = "Critère non rempli.";
-        else if (score === "na") commentaire = "Non applicable.";
-        else commentaire = "Réponse inattendue.";
+        if (score === "1") commentaire = "Critère rempli";
+        else if (score === "0.75" || score === "0.5") commentaire = "Critère partiellement rempli";
+        else if (score === "0") commentaire = "Critère non rempli";
+        else if (score === "na") commentaire = "Non applicable";
+        else commentaire = "Réponse non attendue";
       }
+      //Couleur de la pastille
       if (score === "1") pastille = '#00d600';
       else if (score === "0.75" || score === "0.5") pastille = '#c9f70f';
       else if (score === "0") pastille = '#f23311';
@@ -413,12 +436,15 @@ categoriesData.forEach((item, idx) => {
       commentaire = "Question non répondue ou ne nécessitant pas de réponse dans votre cas";
     }
     return `
-      <div class="detail-question-row">
-        <span class="detail-question-comment">${commentaire}</span>
-        <span class="score-dot detail-question-dot" style="background:${pastille};"></span>
-      </div>
-      <br>
-    `;
+  <div class="detail-question-row">
+    <span class="detail-question-comment">${commentaire}</span>
+    <img src="${getImageForScore(checked ? checked.getAttribute('data-score') : null)}" 
+         alt="pastille" 
+         class="detail-question-dot" 
+         style="width:23px;height:23px;display:inline-block;margin-left:10px;vertical-align:middle;">
+  </div>
+  <br>
+`;
   }).join('');
 
   // Jauge de score
@@ -465,6 +491,8 @@ qualites.sort((a, b) => a.note - b.note);
 // Génération du HTML final
 let categoriesHTML = '';
 const scoreTotalInt = parseInt(scoreTotalText)
+
+//Si le score est inférieur à 40, on affiche les défauts puis les qualités
 if (scoreTotalInt <= 40 ){
 if (defauts.length) {
   categoriesHTML += `<h3 >Défauts</h3>`;
@@ -478,6 +506,8 @@ if (qualites.length) {
 
 }
 }
+
+//Si le score est supérieur à 40, on affiche les qualités puis les défauts
 else {
 if (qualites.length) {
   categoriesHTML += `<h3>Qualités</h3>`;
@@ -491,39 +521,47 @@ if (defauts.length) {
 }
 
 
-
 document.getElementById('scores-categories').innerHTML = categoriesHTML;
 
   // Ajoute l'interactivité pour la flèche (chavron pour ouvrir et fermer le détail)
-document.querySelectorAll('.detail-toggle').forEach((row, idx, arr)=> {
+document.querySelectorAll('.detail-toggle').forEach((row, idx, arr) => {
   row.addEventListener('click', function() {
     const detail = this.nextElementSibling;
     const arrow = this.querySelector('.detail-arrow');
     const modalContent = document.querySelector('#modal-resultats .modal-content');
+
+    // Ferme tous les autres détails ouverts
+    document.querySelectorAll('.categorie-detail-content').forEach((otherDetail, otherIdx) => {
+      if (otherDetail !== detail) {
+        otherDetail.style.display = 'none';
+        const otherHeader = otherDetail.previousElementSibling;
+        if (otherHeader) {
+          otherHeader.classList.remove('no-border');
+          const otherArrow = otherHeader.querySelector('.detail-arrow');
+          if (otherArrow) {
+            otherArrow.outerHTML = `<svg class="detail-arrow" width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle; transform: rotate(90deg);"><path d="M8 5l8 7-8 7" stroke="#280147" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+          }
+        }
+      }
+    });
+
+    // Ouvre ou ferme le détail cliqué
     if (detail.style.display === 'none') {
       detail.style.display = 'block';
-      arrow.outerHTML = arrowChevronRight;
+      arrow.outerHTML = `<svg class="detail-arrow" width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M8 5l8 7-8 7" stroke="#280147" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
       this.classList.add('no-border');
       detail.classList.add('with-border');
-      // --- scroll automatique du bloc détaillé en haut de la modale ---
-      const modalContent = document.querySelector('#modal-resultats .modal-content');
+      // Scroll automatique du bloc détaillé en haut de la modale
       if (modalContent) {
         const rect = this.getBoundingClientRect();
         const modalRect = modalContent.getBoundingClientRect();
-        modalContent.scrollTop += rect.top - modalRect.top -8 ;
+        modalContent.scrollTop += rect.top - modalRect.top - 8;
       }
     } else {
       detail.style.display = 'none';
-      arrow.outerHTML = arrowChevronDown;
+      arrow.outerHTML = `<svg class="detail-arrow" width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle; transform: rotate(90deg);"><path d="M8 5l8 7-8 7" stroke="#280147" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
       this.classList.remove('no-border');
       detail.classList.remove('with-border');
-      // Scroll sur le header de la catégorie précédente si elle existe
-      if (modalContent && idx > 0) {
-        const prevHeader = arr[idx - 1];
-        const prevRect = prevHeader.getBoundingClientRect();
-        const modalRect = modalContent.getBoundingClientRect();
-        modalContent.scrollTop += prevRect.top - modalRect.top - 8;
-      }
     }
   });
 });
@@ -542,9 +580,8 @@ function calculerScore() {
     var total = 0; // Nombre total de points
     var max = 28; // Nombre maximum de points applicable, initialisé à 0
 
-    // Pour gérer les questions "na" et les groupes de radio,
-    // nous allons d'abord collecter toutes les réponses cochées par groupe de question (par leur 'name')
-    const checkedAnswers = {}; // { 'q1': '1', 'q1b': '0.5', 'q2': 'na', ... }
+    // Pour gérer les questions "na" et les groupes de radio, on récupère toutes les réponses cochées par groupe de question (par leur 'name')
+    const checkedAnswers = {}; //ex: { 'q1': '1', 'q1b': '0.5', 'q2': 'na', ... }
 
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].type === 'radio' && inputs[i].checked) {
@@ -581,7 +618,7 @@ function calculerScore() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Fonction quui calclule le détail des scores par catégorie 
+//Fonction qui calclule le détail des scores par catégorie 
 function calculerdetail() {
     var onglets = document.getElementsByClassName('tab-content');
     var resultats = []; // Tableau de résultats
@@ -594,7 +631,7 @@ function calculerdetail() {
         var total = 0; // Score total pour cet onglet
         var max = parseInt(onglets[i].getAttribute('data_max'));//Récupère la valeur max de chaque onglet
 
-        // Comme pour calculerScore, on collecte les réponses cochées uniques par groupe de question dans cet onglet
+        // Comme pour calculerScore, on récupère les réponses cochées uniques par groupe de question dans cet onglet
         const checkedAnswersOnglet = {};
         for (var j = 0; j < inputs.length; j++) {
             if (inputs[j].type === 'radio' && inputs[j].checked) {
@@ -626,7 +663,6 @@ function calculerdetail() {
         }
         
         // Ajout du titre et du score
-
         var titre = "";
         if (i === 0) titre = "Structuration pour l’ouverture à la recherche";
         else if (i === 1) titre = "Procédures de mise en qualité";
@@ -748,12 +784,14 @@ const getScoreColor = score => {
     if (n <= 80 ) return [0, 214, 0];
     return [12, 156, 12];
 };
+
 // Ligne note globale
 tableRows.push([
     { content: 'Note globale', styles: { fillColor: [212, 212, 212] } },
     { content: globalScore, styles: { fillColor: getScoreColor(globalScore), halign: 'center', fontStyle:'bold' } }
 ]);
 
+//Tableau récapitulatif
 doc.autoTable({
     startY: positionY,
     head: [['Catégorie', 'Note']],
@@ -785,9 +823,12 @@ doc.autoTable({
 // Ajoute une nouvelle page avant le détail des catégories
 doc.addPage();
 
-let currentY = 20; // Position Y courante sur la page
+// Position Y courante sur la page
+let currentY = 20; 
 const pageHeight = doc.internal.pageSize.getHeight();
-const minBottomMargin = 20; // Marge basse pour éviter de coller au bord
+
+// Marge basse pour éviter de coller au bord
+const minBottomMargin = 20; 
 
 categoriesData.forEach((item, idx) => {
     // Récupère le titre de la catégorie
@@ -869,7 +910,7 @@ doc.text(title, titleX, currentY + 8);
 currentY += 4; 
 
 
-    // Tableau des détails (commentaire + pastille couleur)
+    // Tableau des détails (commentaire + couleur)
     doc.autoTable({
         startY: currentY + 12,
         head: [['Commentaire', 'Note']],
@@ -915,6 +956,7 @@ for (let i = 1; i <= pageCount; i++) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//FOnctions qui ouvrent et fermetn le popup
 
 function ouvrirPopup(id) {
   document.getElementById(id).style.display = 'flex';

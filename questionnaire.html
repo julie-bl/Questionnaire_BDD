@@ -37,6 +37,7 @@
         Population cible, critères d’inclusion, variables collectées, modalité de collecte, contrôle qualité.</p>
         <label><input type="radio" name="q1b" value="oui" data-score="0.5"> Oui</label>
         <label><input type="radio" name="q1b" value="non" data-score="0"> Non</label>
+        <label><input type="radio" name="q1b" value="na" data-score="na"> Non applicable</label>
     </div>
    
     <p>2.  La base de données est-elle partageable(**) avec d’autres utilisateurs que votre équipe ?</p>
@@ -247,11 +248,11 @@
     <h3 id="h2_gauche">Options</h3>
     <br>
   
-    <button onclick="telechargerPDF()"><img src="telechargement_icone.png" alt="Logo téléchargement" style="max-width: 5%;"> Télécharger les résultats en PDF</button>
+    <button onclick="telechargerPDF()"><img src="Images/telechargement_icone.png" alt="Logo téléchargement" style="max-width: 5%;"> Télécharger les résultats en PDF</button>
     <br>
-    <button onclick="ouvrirPopup('popup-methode')"><img src="texte_loupe_icone.png" alt="Logo loupe" style="max-width: 5%;"> Méthode de notation</button>
+    <button onclick="ouvrirPopup('popup-methode')"><img src="Images/texte_loupe_icone.png" alt="Logo loupe" style="max-width: 5%;"> Méthode de notation</button>
     <br>
-    <button onclick="ouvrirPopup('popup-contexte')"><img src="interrogation_icone.png" alt="logo point d'interrogation" style="max-width: 5%;">Contexte</button>
+    <button onclick="ouvrirPopup('popup-contexte')"><img src="Images/interrogation_icone.png" alt="logo point d'interrogation" style="max-width: 5%;">Contexte</button>
     </div>
   </div>
 </div>
@@ -262,7 +263,30 @@
     <button class="close-popup" onclick="fermerPopup('popup-methode')">x</button>
     <br>
     <h2>Méthode de notation</h2>
-    <p>blabla<br></p>
+    <p>Un score entre 0 et 1 a été attribué à chaque question, permettant de calculer le score global en 
+        fonction des réponses cochées. Le score par catégorie est ensuite calculé afin d'y voir les 
+        point forts et faibles de chacune.<br><br><br></p>
+    
+    <h3>À quoi correspondent les pastilles de couleur ?</h3>
+    <br>
+    <h4 id="h4_gauche"> 1. Dans le cadre du score global ou du score par catégorie</h4>
+
+    <p id="p_methode">
+    <img src="Images/vert_fonce.png" alt="Vert foncé" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Excellent (entre 80% et 100%)<br>
+    <img src="Images/vert_clair.png" alt="Vert clair" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Bien (entre 60% et 80%)<br>
+    <img src="Images/jaune.png" alt="Jaune" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Moyen (entre 40% et 60%)<br>
+    <img src="Images/orange.png" alt="Orange" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Médiocre (entre 20% et 40%)<br>
+    <img src="Images/rouge.png" alt="Rouge" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Mauvais (entre 0% et 20%)<br>
+
+    <br>
+    <h4 id="h4_gauche">2. Dans le détail de chaque question</h4>
+    <p id="p_methode">
+    <img src="Images/bien.png" alt="Coche verte" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Critère rempli, parfait (1/1 point) <br>
+    <img src="Images/moyen.png" alt="Tiret orange" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Critère partiellement rempli, peut être amélioré (0,5/1 ou 0,75/1 point) <br>
+    <img src="Images/mauvais.png" alt="Tiret orange" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Critère non rempli, doit être amélioré (0/1 point) <br>
+    <img src="Images/na.png" alt="N/A" style="width:23px; height:23px; vertical-align: sub; margin-top: 4px;"> : Non applicable (question non comptabilisée) <br>
+    </p>
+
   </div>
 </div>
 <!-- Pop-up du contexte du questionnaire -->
@@ -271,13 +295,19 @@
     <button class="close-popup" onclick="fermerPopup('popup-contexte')">x</button>
     <br>
     <h2>Contexte du questionnaire</h2>
+    <br>
+    <p id="p1">Le nombre de bases de données est considérable. Cependant, elles sont rarement réutilisées car leur 
+        manque de qualité les rend juridiquement inexploitables pour un essai clinique, entraînant un gaspillage 
+        de données précieuses. Ces dernières pourraient pourtant servir à de nouveaux essais, générant ainsi un 
+        gain de temps et d'argent significatif.<br>
 
-    <p id="p1">La qualité des données est essentielle pour la recherche et l’innovation en santé et incontournable
-pour leur partage. Sous l’impulsion du Ministère de l'Enseignement Supérieur, de la Recherche et de
-l'Innovation (MESRI), un groupe de travail(*) s’est mobilisé pour proposer un outil d’auto-évaluation
-pour les responsables de base de données en santé. L’objectif est d’identifier les points forts et faibles
-de la gestion de la qualité et du partage. Cet outil n’a pas vocation à interclasser des bases de données.
-Il doit être utilisé dans cette version sans y apporter de modifications.<br><br></p>
+        Ce constat souligne une vérité fondamentale : la qualité des données est non seulement essentielle 
+        pour la recherche et l'innovation en santé, mais elle est également incontournable pour leur partage.
+         De ce fait, sous l’impulsion du Ministère de l'Enseignement Supérieur, de la Recherche et de
+        l'Innovation (MESRI), un groupe de travail(*) s’est mobilisé pour proposer un outil d’auto-évaluation
+        pour les responsables de base de données en santé. L’objectif est d’identifier les points forts et faibles
+        de la gestion de la qualité et du partage. Cet outil n’a pas vocation à interclasser des bases de données.
+        Il doit être utilisé dans cette version sans y apporter de modifications.<br><br></p>
 
 <p id="p2">(*) Romain Casey (OFSEP, Épidémiologiste), Marie Zins et Marcel Goldberg (INSERM, Épidémiologistes, cohorte
 Constances), Yohann Foucher (MESRI, Chargé de mission), Christophe Bonaldi (Santé Publique France,

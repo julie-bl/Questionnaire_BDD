@@ -12,11 +12,20 @@ h1, h2 {
   text-align: center;
   margin: 0 0 20px 0;
 }
-#h2_gauche {
+#h2_gauche, #h4_gauche {
   text-align: left !important;
   display: block;
   width: 100%;
   margin: 0;
+}
+
+#p_methode {
+  line-height: 1.8;        
+  text-align: left;        
+  margin-left: 24px;       
+  margin-right: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 /* Onglets */
@@ -279,7 +288,7 @@ button:hover, .nav-button:hover {
 /* Options dans la modale */
 .Options {
   background-color: #f2f2f7; 
-  padding: 20px;
+  padding: 40px;
   border-radius: 10px;
 }
 .Options button {
@@ -317,6 +326,7 @@ button:hover, .nav-button:hover {
   background: rgba(0,0,0,0.5);
   align-items: center;
   justify-content: center;
+  padding: 30px;
 }
 .custom-popup-content {
   background: #fff;
@@ -342,17 +352,23 @@ button:hover, .nav-button:hover {
 .custom-popup-content {
   background: #fff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 40px;
   max-width: 700px;
   width: 90vw;
   position: relative;
   box-shadow: 0 4px 24px #0003;
   text-align: center; 
 }
+#popup-methode .custom-popup-content {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 24px;
+}
+.custom-popup-content h2{text-align: center;
+}
 
-.custom-popup-content h2,
 .custom-popup-content p {
-  text-align: center; 
+  text-align: justify; 
 }
 
 /* Responsive pour mobile et tablette */
