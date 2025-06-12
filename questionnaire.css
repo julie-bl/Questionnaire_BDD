@@ -66,7 +66,7 @@ input[type="radio"] {
 }
 
 /* Boutons */
-button, .nav-button {
+button {
   background-color: #4b237b;
   color: white;
   border-radius: 10px;
@@ -74,6 +74,13 @@ button, .nav-button {
   border: 2px solid #4b237b;
   cursor: pointer;
 }
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 20px;
+}
+
 button:hover, .nav-button:hover {
   background-color: #fff;
   color: #4b237b;
